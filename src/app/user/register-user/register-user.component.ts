@@ -10,11 +10,12 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 export class RegisterUserComponent implements OnInit {
 
   private readonly _registrationForm = this._formBuilder.group({
-    firstname: '',
-    lastname: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    firstName: '',
+    lastName: '',
+    userCredential: this._formBuilder.group( {
+      email: '',
+      password: ''
+    })
   });
 
   constructor(private _personService: PersonService,

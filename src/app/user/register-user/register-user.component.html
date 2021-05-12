@@ -7,29 +7,29 @@
           <form class="col s12" [formGroup]="registrationForm" (ngSubmit)="submit()">
             <div class="row">
               <div class="input-field col s6">
-                <input id="first_name" type="text" class="validate" formControlName="firstname">
+                <input id="first_name" type="text" class="validate" formControlName="firstName">
                 <label for="first_name">First Name</label>
               </div>
               <div class="input-field col s6">
-                <input id="last_name" type="text" class="validate" formControlName="lastname">
+                <input id="last_name" type="text" class="validate" formControlName="lastName">
                 <label for="last_name">Last Name</label>
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s12">
-                <input id="email" placeholder="(used to sign in)" type="email" class="validate" formControlName="email">
+              <div class="input-field col s12" formGroupName="userCredential">
+                <input id="email" name="email" placeholder="(used to sign in)" type="email" class="validate" formControlName="email">
                 <label for="email">Email</label>
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s12">
+              <div class="input-field col s12" formGroupName="userCredential">
                 <input id="password" type="password" class="validate" minlength="8" formControlName="password">
                 <label for="password">Password</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
-                <input id="passwordVerification" type="password" class="validate" minlength="8" formControlName="confirmPassword">
+                <input id="passwordVerification" type="password" class="validate" minlength="8" >
                 <label for="passwordVerification">Password (again)</label>
               </div>
             </div>
