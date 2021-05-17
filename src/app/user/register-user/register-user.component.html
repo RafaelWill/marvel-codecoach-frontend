@@ -17,20 +17,25 @@
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="email" name="email" placeholder="(used to sign in)" type="email" class="validate" formControlName="email">
-                <label for="email">Email</label>
+                <input id="email" name="email" type="email" class="validate" formControlName="email" required="required">
+                <label for="email">Email (used to sign in)</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="password" type="password" class="validate" minlength="8" formControlName="password">
+                <input id="password" type="password" class="validate" minlength="8" formControlName="password" required="required">
                 <label for="password">Password</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="confirmedPassword" type="password" class="validate" minlength="8" formControlName="confirmedPassword">
+                <input id="confirmedPassword"  type="password" class="validate" minlength="8" formControlName="confirmedPassword" required="required">
                 <label for="confirmedPassword">Password (again)</label>
+                <div class="alert-danger" *ngIf="registrationForm.hasError('notEquivalent','userCredential.confirmedPassword')
+                    && (registrationForm.get('userCredential')?.get('confirmedPassword')?.dirty
+                    || registrationForm.get('userCredential')?.get('confirmedPassword')?.touched)">
+                    Passwords are not matching
+                </div>
               </div>
             </div>
             <div class="row right-align">

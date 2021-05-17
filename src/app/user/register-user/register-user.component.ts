@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PersonService} from '../../shared/service/person.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-register-user',
@@ -14,10 +14,11 @@ export class RegisterUserComponent implements OnInit {
     firstName: '',
     lastName: '',
     userCredential: this._formBuilder.group({
-      email: '',
-      password: '',
-      confirmedPassword: ''
-    })
+      email: ['', {validators: [Validators.required, Validators.email], updateOn: 'blur'}],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$')]],
+      confirmedPassword: ['', [Validators.required]]
+    },
+      {validator: this.checkIfMatchingPasswords('password', 'confirmedPassword')})
   });
 
   constructor(private _personService: PersonService,
@@ -41,4 +42,19 @@ export class RegisterUserComponent implements OnInit {
   submit(): void {
     this.addPerson();
   }
+
+// tslint:disable-next-line:typedef
+checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
+  return (group: FormGroup) => {
+    // tslint:disable-next-line:one-variable-per-declaration
+    const passwordInput = group.controls[passwordKey],
+      passwordConfirmationInput = group.controls[passwordConfirmationKey];
+    if (passwordInput.value !== passwordConfirmationInput.value) {
+      return passwordConfirmationInput.setErrors({notEquivalent: true});
+    }
+    else {
+      return passwordConfirmationInput.setErrors(null);
+    }
+  };
+}
 }
