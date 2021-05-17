@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PersonService} from '../../shared/service/person.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
@@ -9,23 +9,26 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 })
 export class RegisterUserComponent implements OnInit {
 
+// TODO: add pwd validation
   private readonly _registrationForm = this._formBuilder.group({
     firstName: '',
     lastName: '',
-    userCredential: this._formBuilder.group( {
+    userCredential: this._formBuilder.group({
       email: '',
-      password: ''
+      password: '',
+      confirmedPassword: ''
     })
   });
 
   constructor(private _personService: PersonService,
-              private _formBuilder: FormBuilder) { }
+              private _formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this._registrationForm.reset();
   }
 
-  addPerson(): void{
+  addPerson(): void {
     this._personService
       .save(this._registrationForm.value)
       .subscribe(() => this._registrationForm.reset());

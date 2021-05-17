@@ -28,9 +28,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s12">
-                <input id="passwordVerification" type="password" class="validate" minlength="8" >
-                <label for="passwordVerification">Password (again)</label>
+              <div class="input-field col s12" formGroupName="userCredential">
+                <input id="confirmedPassword" type="password" class="validate" minlength="8" formControlName="confirmedPassword">
+                <label for="confirmedPassword">Password (again)</label>
               </div>
             </div>
             <div class="row right-align">

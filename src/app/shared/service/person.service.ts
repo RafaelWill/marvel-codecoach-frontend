@@ -15,7 +15,7 @@ export class PersonService {
     this._url = `${environment.backendUrl}/users`;
   }
 
-  save(person: FormData): Observable<Person>{
-    return this._http.post<Person>(this._url, person);
+  save(personData: FormData): Observable<Person>{
+    return this._http.post<Person>(this._url, personData);
   }
 }
