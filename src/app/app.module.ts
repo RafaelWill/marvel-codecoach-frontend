@@ -7,11 +7,17 @@ import {LayoutModule} from './layout/layout.module';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { Error404Component } from './error/error404/error404.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    HomeComponent,
+    UserProfileComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,
