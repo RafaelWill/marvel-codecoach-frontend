@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PersonService} from '../../shared/service/person.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register-user',
@@ -9,23 +10,25 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class RegisterUserComponent implements OnInit {
 
-// TODO: add pwd validation
   private readonly _registrationForm = this._formBuilder.group({
-    firstName: '',
-    lastName: '',
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
     userCredential: this._formBuilder.group({
         email: ['', {validators: [Validators.required, Validators.email], updateOn: 'blur'}],
-        password: ['',
-          [Validators.required,
-          Validators.minLength(8),
-          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$')]],
+        password: ['', {
+          validators:
+            [Validators.required,
+              Validators.minLength(8),
+              Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$')]
+        }],
         confirmedPassword: ['', [Validators.required]]
       },
       {validator: this.checkIfMatchingPasswords('password', 'confirmedPassword')})
   });
 
   constructor(private _personService: PersonService,
-              private _formBuilder: FormBuilder) {
+              private _formBuilder: FormBuilder,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -35,7 +38,12 @@ export class RegisterUserComponent implements OnInit {
   addPerson(): void {
     this._personService
       .save(this._registrationForm.value)
-      .subscribe(() => this._registrationForm.reset());
+      .subscribe((personRegistered) => {
+          this._registrationForm.reset();
+          // TODO: improve that, lk tried with a personRegisteredID variable and an async method in submit() but it kept the default value
+          this.router.navigate(['users/' + personRegistered.id]);
+        }
+      );
   }
 
   get registrationForm(): FormGroup {
@@ -43,7 +51,9 @@ export class RegisterUserComponent implements OnInit {
   }
 
   submit(): void {
-    this.addPerson();
+    if (this._registrationForm.valid) {
+      this.addPerson();
+    }
   }
 
   checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string): (group: FormGroup) => void {
