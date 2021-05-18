@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class RegisterUserComponent implements OnInit {
 
-  private _personRegisteredID: string;
+  private _personRegisteredID?: string;
 
   private readonly _registrationForm = this._formBuilder.group({
     firstName: '',
