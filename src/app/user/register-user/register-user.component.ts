@@ -10,7 +10,6 @@ import {Router} from '@angular/router';
 })
 export class RegisterUserComponent implements OnInit {
 
-  private _personRegisteredID?: string;
 
   private readonly _registrationForm = this._formBuilder.group({
     firstName: '',
@@ -40,7 +39,7 @@ export class RegisterUserComponent implements OnInit {
       .save(this._registrationForm.value)
       .subscribe((personRegistered) => {
           this._registrationForm.reset();
-          this._personRegisteredID = personRegistered.id;
+          this.router.navigate(['users/' + personRegistered.id]);
         }
       );
   }
@@ -51,7 +50,6 @@ export class RegisterUserComponent implements OnInit {
 
   submit(): void {
     this.addPerson();
-    this.router.navigate(['users/' + this._personRegisteredID]);
   }
 
   checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string): (group: FormGroup) => void {
