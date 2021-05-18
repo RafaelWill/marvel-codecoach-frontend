@@ -10,6 +10,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { Error404Component } from './error/error404/error404.component';
+import { BecomeCoachComponent } from './user/become-coach/become-coach.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { Error404Component } from './error/error404/error404.component';
     RegisterUserComponent,
     HomeComponent,
     UserProfileComponent,
-    Error404Component
+    Error404Component,
+    BecomeCoachComponent
   ],
   imports: [
     BrowserModule,
