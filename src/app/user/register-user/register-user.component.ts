@@ -12,8 +12,8 @@ export class RegisterUserComponent implements OnInit {
 
 
   private readonly _registrationForm = this._formBuilder.group({
-    firstName: '',
-    lastName: '',
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
     userCredential: this._formBuilder.group({
         email: ['', {validators: [Validators.required, Validators.email], updateOn: 'blur'}],
         password: ['',
@@ -39,6 +39,7 @@ export class RegisterUserComponent implements OnInit {
       .save(this._registrationForm.value)
       .subscribe((personRegistered) => {
           this._registrationForm.reset();
+          // TODO: improve that, i tried with a personRegisteredID variable and an async method in submit() but it kept the default value
           this.router.navigate(['users/' + personRegistered.id]);
         }
       );
