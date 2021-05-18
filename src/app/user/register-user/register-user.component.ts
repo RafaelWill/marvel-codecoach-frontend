@@ -10,16 +10,17 @@ import {Router} from '@angular/router';
 })
 export class RegisterUserComponent implements OnInit {
 
-
   private readonly _registrationForm = this._formBuilder.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     userCredential: this._formBuilder.group({
         email: ['', {validators: [Validators.required, Validators.email], updateOn: 'blur'}],
-        password: ['',
-          [Validators.required,
-            Validators.minLength(8),
-            Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$')]],
+        password: ['', {
+          validators:
+            [Validators.required,
+              Validators.minLength(8),
+              Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$')]
+        }],
         confirmedPassword: ['', [Validators.required]]
       },
       {validator: this.checkIfMatchingPasswords('password', 'confirmedPassword')})
@@ -39,7 +40,7 @@ export class RegisterUserComponent implements OnInit {
       .save(this._registrationForm.value)
       .subscribe((personRegistered) => {
           this._registrationForm.reset();
-          // TODO: improve that, i tried with a personRegisteredID variable and an async method in submit() but it kept the default value
+          // TODO: improve that, lk tried with a personRegisteredID variable and an async method in submit() but it kept the default value
           this.router.navigate(['users/' + personRegistered.id]);
         }
       );
@@ -50,7 +51,9 @@ export class RegisterUserComponent implements OnInit {
   }
 
   submit(): void {
-    this.addPerson();
+    if (this._registrationForm.valid) {
+      this.addPerson();
+    }
   }
 
   checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string): (group: FormGroup) => void {

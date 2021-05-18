@@ -23,7 +23,7 @@
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="password" type="password" class="validate" minlength="8" formControlName="password" required="required" (ngModelChange)="updateConfirmPattern()">
+                <input id="password" type="password" class="validate" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" formControlName="password" required="required" (ngModelChange)="updateConfirmPattern()">
                 <label for="password">Password</label>
               </div>
             </div>
