@@ -42,23 +42,6 @@ export class RegisterUserComponent implements OnInit {
       .save(this._registrationForm.value);
   }
 
-  fc(controlName: string): AbstractControl | null {
-    return this._registrationForm.get(controlName);
-  }
-
-  ucfc(controlName: string): AbstractControl | null | undefined {
-    return this._registrationForm.get('userCredential')?.get(controlName);
-  }
-
-
-  get ucf(): AbstractControl | null{
-    return this._registrationForm.get('userCredential');
-  }
-
-  get registrationForm(): FormGroup {
-    return this._registrationForm;
-  }
-
   submit(): void {
     if (this._registrationForm.valid) {
       this.addPerson()
@@ -68,6 +51,18 @@ export class RegisterUserComponent implements OnInit {
           }
         );
     }
+  }
+
+  fc(controlName: string): AbstractControl | null {
+    return this._registrationForm.get(controlName);
+  }
+
+  ucfc(controlName: string): AbstractControl | null | undefined {
+    return this._registrationForm.get('userCredential')?.get(controlName);
+  }
+
+  get registrationForm(): FormGroup {
+    return this._registrationForm;
   }
 
   checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string): (group: FormGroup) => void {
