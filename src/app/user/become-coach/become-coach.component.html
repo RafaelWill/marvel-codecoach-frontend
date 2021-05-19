@@ -27,38 +27,67 @@
         <h5>Apply to become a coach</h5>
         <div class="divider"></div>
         <form [formGroup]="becomeCoachForm" (ngSubmit)="submit()">
-        <div class="row">
+          <div class="row">
 
-
-          <div class="col l2 m2 s12">
-            <div class="input-field col s5">
-              <input id="first_name" type="text" class="validate" formControlName="fullName">
-              <label for="first_name">Full Name</label>
-            </div>
-            <div class="input-field col s12">
-              <textarea id="motivation" class="materialize-textarea" data-length="120" formControlName="motivation"></textarea>
-              <label for="motivation">Motivation</label>
-            </div>
-
-            <div class="input-field col s5">
-              <input id="topic" type="text" class="validate" formControlName="topic">
-              <label for="topic">Topic</label>
-              <div formArrayName="extraTopics" *ngFor="let topic of alternateTopics?.controls; let i=index">
-                <input type="text" class="validate form-control" [formControlName]="i">
+            <div class="col l2 m2 s12">
+              <div class="input-field col s6">
+                <input id="first_name" type="text" class="validate" formControlName="fullName" placeholder="{{person.firstname}} {{person.lastname}}" >
+                <label for="first_name">Full Name</label>
               </div>
-              <button type="button" class="waves-effect waves-light btn-small yellow darken-2 black-text" (click)="addAlternateTopic()">Add topic</button>
+              <div class="input-field col s12">
+                <textarea id="motivation" class="materialize-textarea" data-length="120"
+                          formControlName="motivation"></textarea>
+                <label for="motivation">Motivation</label>
+              </div>
+
+              <div class="input-field col s6">
+                <input id="topic" type="text" formControlName="topic">
+                <label for="topic">Topic</label>
+
+                <div formArrayName="extraTopics" *ngFor="let topic of extraTopics?.controls; let i=index">
+                  <input type="text" [formControlName]="i">
+                </div>
+
+                <button type="button" class="waves-effect waves-light btn-small yellow darken-2 black-text"
+                        (click)="addExtraTopic()">Add topic
+                </button>
+              </div>
+              <div class="input-field col s6">
+                <select id="grade" formControlName="grade">
+                  <option value="" disabled selected>Choose your grade</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                </select>
+                <label for="grade"></label>
+
+                <div formArrayName="extraGrades" *ngFor="let grade of extraGrades?.controls; let i=index">
+                  <select style="display: block" [formControlName]="i">
+                    <option value="" disabled selected>Choose your grade</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                  </select>
+
+                </div>
+              </div>
+
             </div>
 
           </div>
-        </div>
-        <div class="row right-align justify-content-center">
-          <a class="waves-effect waves-light yellow darken-2 btn-large black-text">Send Email <i
-            class="material-icons right">send</i></a>
-        </div>
+          <div class="row right-align justify-content-center">
+            <a class="waves-effect waves-light yellow darken-2 btn-large black-text">Send Email <i
+              class="material-icons right">send</i></a>
+          </div>
         </form>
       </section>
       <p>{{this.becomeCoachForm.value | json}}</p>
-
     </div>
   </div>
 </div>

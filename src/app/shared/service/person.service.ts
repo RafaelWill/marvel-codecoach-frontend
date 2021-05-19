@@ -18,4 +18,8 @@ export class PersonService {
   save(personData: FormData): Observable<Person>{
     return this._http.post<Person>(this._url, personData);
   }
+
+  findById(id: string): Observable<any> {
+    return this._http.get<Person>(`${this._url}/${id}`);
+  }
 }
