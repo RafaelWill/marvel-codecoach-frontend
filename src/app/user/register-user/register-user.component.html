@@ -7,34 +7,57 @@
           <form class="col s12" [formGroup]="registrationForm" (ngSubmit)="submit()">
             <div class="row">
               <div class="input-field col s6">
-                <input id="first_name" type="text" class="validate" formControlName="firstName" required="required">
+                <input id="first_name" type="text" class="validate" formControlName="firstName" required="required"
+                       [ngClass]="{'is-invalid':fc('firstName')?.errors
+                       && (fc('firstName')?.dirty || fc('firstName')?.touched)}">
                 <label for="first_name">First Name</label>
+                <div class="invalid-feedback" *ngIf="fc('firstName')?.errors">
+                  First name is required.
+                </div>
               </div>
               <div class="input-field col s6">
-                <input id="last_name" type="text" class="validate" formControlName="lastName" required="required">
+                <input id="last_name" type="text" class="validate" formControlName="lastName" required="required"
+                       [ngClass]="{'is-invalid':fc('lastName')?.errors
+                       && (fc('lastName')?.dirty || fc('lastName')?.touched)}">
                 <label for="last_name">Last Name</label>
+                <div class="invalid-feedback" *ngIf="fc('lastName')?.errors">
+                  Last name is required.
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="email" name="email" type="email" class="validate" formControlName="email" required="required">
+                <input id="email" name="email" type="email" class="validate" formControlName="email" required="required"
+                       [ngClass]="{'is-invalid':ucfc('email')?.errors
+                    && (ucfc('email')?.dirty || ucfc('email')?.touched)}">
                 <label for="email">Email (used to sign in)</label>
+                <div class="invalid-feedback" *ngIf="ucfc('email')?.errors">
+                  Valid email address is required.
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="password" type="password" class="validate" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" formControlName="password" required="required" (ngModelChange)="updateConfirmPattern()">
+                <input id="password" type="password" class="validate"
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" formControlName="password" required="required"
+                       [ngClass]="{'is-invalid':ucfc('password')?.errors
+                    && (ucfc('password')?.dirty || ucfc('password')?.touched)}">
                 <label for="password">Password</label>
+                <div class="invalid-feedback" *ngIf="ucfc('password')?.errors">
+                  Valid password is required: at least 8 characters (1 uppercase letter, 1 lowercase letter, 1 number).
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12" formGroupName="userCredential">
-                <input id="confirmedPassword"  type="password" class="validate" minlength="8" formControlName="confirmedPassword" required="required">
+                <input id="confirmedPassword" type="password" class="validate" minlength="8" formControlName="confirmedPassword" required="required"
+                       [ngClass]="{'is-invalid':ucfc('confirmedPassword')?.errors
+                    && (ucfc('confirmedPassword')?.dirty || ucfc('confirmedPassword')?.touched)}">
                 <label for="confirmedPassword">Password (again)</label>
-                <div class="alert-danger" *ngIf="registrationForm.hasError('notEquivalent','userCredential.confirmedPassword')
-                    && (registrationForm.get('userCredential')?.get('confirmedPassword')?.dirty
-                    || registrationForm.get('userCredential')?.get('confirmedPassword')?.touched)">
-                    Passwords are not matching
+                <div class="invalid-feedback" *ngIf="registrationForm.hasError('notEquivalent','userCredential.confirmedPassword')
+                    && (ucfc('confirmedPassword')?.dirty
+                    || ucfc('confirmedPassword')?.touched)">
+                  Passwords are not matching
                 </div>
               </div>
             </div>

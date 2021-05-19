@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {PersonService} from '../../shared/service/person.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {Person} from '../../shared/model/person';
 
 @Component({
   selector: 'app-register-user',
@@ -14,7 +16,7 @@ export class RegisterUserComponent implements OnInit {
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     userCredential: this._formBuilder.group({
-        email: ['', {validators: [Validators.required, Validators.email], updateOn: 'blur'}],
+        email: ['', {validators: [Validators.required, Validators.email]}],
         password: ['', {
           validators:
             [Validators.required,
@@ -35,15 +37,22 @@ export class RegisterUserComponent implements OnInit {
     this._registrationForm.reset();
   }
 
-  addPerson(): void {
-    this._personService
-      .save(this._registrationForm.value)
-      .subscribe((personRegistered) => {
-          this._registrationForm.reset();
-          // TODO: improve that, lk tried with a personRegisteredID variable and an async method in submit() but it kept the default value
-          this.router.navigate(['users/' + personRegistered.id]);
-        }
-      );
+  addPerson(): Observable<Person> {
+    return this._personService
+      .save(this._registrationForm.value);
+  }
+
+  fc(controlName: string): AbstractControl | null {
+    return this._registrationForm.get(controlName);
+  }
+
+  ucfc(controlName: string): AbstractControl | null | undefined {
+    return this._registrationForm.get('userCredential')?.get(controlName);
+  }
+
+
+  get ucf(): AbstractControl | null{
+    return this._registrationForm.get('userCredential');
   }
 
   get registrationForm(): FormGroup {
@@ -52,7 +61,12 @@ export class RegisterUserComponent implements OnInit {
 
   submit(): void {
     if (this._registrationForm.valid) {
-      this.addPerson();
+      this.addPerson()
+        .subscribe((personRegistered) => {
+            this._registrationForm.reset();
+            this.router.navigate(['users/' + personRegistered.id]);
+          }
+        );
     }
   }
 
