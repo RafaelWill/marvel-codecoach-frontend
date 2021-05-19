@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ScriptService} from '../shared/service/script/script.service';
 
 @Component({
   selector: 'app-home',
@@ -7,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _scriptService: ScriptService) { }
 
   ngOnInit(): void {
+    this._scriptService.load('init');
   }
+
+
 }
