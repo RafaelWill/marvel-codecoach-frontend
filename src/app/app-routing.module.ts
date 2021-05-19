@@ -7,7 +7,8 @@ import {BecomeCoachComponent} from './user/become-coach/become-coach.component';
 import {UserProfileComponent} from './user/user-profile/user-profile.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: 'home', component: HomeComponent},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'users/register', component: RegisterUserComponent},
   {path: 'users/:id', component: UserProfileComponent },
   {path: 'users/:id/become-a-coach', component: BecomeCoachComponent},
