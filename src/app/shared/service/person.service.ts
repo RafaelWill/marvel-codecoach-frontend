@@ -19,7 +19,7 @@ export class PersonService {
     return this._http.post<Person>(this._url, personData);
   }
 
-  findById(id: string): Observable<any> {
+  findById(id: string): Observable<Person> {
     return this._http.get<Person>(`${this._url}/${id}`);
   }
 }

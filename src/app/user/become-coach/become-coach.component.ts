@@ -26,7 +26,6 @@ export class BecomeCoachComponent implements OnInit {
       .subscribe(person => this._person = person);
 
     this._becomeCoachForm = this._formBuilder.group({
-      fullName: '',
       motivation: '',
       topic: '',
       grade: '',
