@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-become-coach',
@@ -13,12 +14,15 @@ export class BecomeCoachComponent implements OnInit {
 
   private _person!: Person;
   _becomeCoachForm!: FormGroup;
+  hasSubmitFailed!: boolean;
 
   constructor(private _formBuilder: FormBuilder,
               private personService: PersonService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit(): void {
+    this.hasSubmitFailed = false;
     const routeParams = this.route.snapshot.paramMap;
     const personIdFromRoute = String(routeParams.get('id'));
     this.personService
@@ -27,8 +31,8 @@ export class BecomeCoachComponent implements OnInit {
 
     this._becomeCoachForm = this._formBuilder.group({
       motivation: '',
-      topic: '',
-      grade: '',
+      topic: ['', [Validators.required]],
+      grade: ['', [Validators.required]],
       extraTopics: this._formBuilder.array([]),
       extraGrades: this._formBuilder.array([])
     });
@@ -53,13 +57,34 @@ export class BecomeCoachComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  addExtraTopic() {
+  addSlot() {
     this.extraTopics.push(this._formBuilder.control(''));
     this.extraGrades.push(this._formBuilder.control(''));
   }
 
   // tslint:disable-next-line:typedef
+  deleteSlot() {
+    this.extraTopics.removeAt(length - 1);
+    this.extraGrades.removeAt(length - 1);
+  }
+
+  // tslint:disable-next-line:typedef
   submit() {
-    console.log(this.becomeCoachForm.value);
+    if (this._becomeCoachForm.valid) {
+      this.becomeACoach().subscribe(
+        () =>  {
+          this._becomeCoachForm.reset();
+          this.router.navigate(['users/' + this.person.id ]); });
+    } else {
+      this.hasSubmitFailed = true;
+    }
+  }
+
+  private becomeACoach(): Observable<any> {
+    return this.personService.becomeCoach(this.person.id, this._becomeCoachForm.value);
+  }
+
+  fc(controlName: string): AbstractControl | null {
+    return this._becomeCoachForm.get(controlName);
   }
 }

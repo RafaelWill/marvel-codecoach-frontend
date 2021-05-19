@@ -22,4 +22,8 @@ export class PersonService {
   findById(id: string): Observable<Person> {
     return this._http.get<Person>(`${this._url}/${id}`);
   }
+
+  becomeCoach(id: string, coachData: FormData): Observable<any> {
+    return this._http.post(`${this._url}/${id}/become-coach`, coachData);
+  }
 }

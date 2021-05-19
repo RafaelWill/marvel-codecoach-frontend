@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'users/register', component: RegisterUserComponent},
   {path: 'users/:id', component: UserProfileComponent },
-  {path: 'users/:id/become-a-coach', component: BecomeCoachComponent},
+  {path: 'users/:id/become-coach', component: BecomeCoachComponent},
   {path: 'not-found', component: Error404Component},
   {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
   ];
