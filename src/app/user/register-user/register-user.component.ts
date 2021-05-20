@@ -30,7 +30,7 @@ export class RegisterUserComponent implements OnInit {
 
   constructor(private _personService: PersonService,
               private _formBuilder: FormBuilder,
-              private router: Router) {
+              private _router: Router) {
   }
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class RegisterUserComponent implements OnInit {
       this.addPerson()
         .subscribe((personRegistered) => {
             this._registrationForm.reset();
-            this.router.navigate(['users/' + personRegistered.id]);
+            this._router.navigate(['users/' + personRegistered.id]);
           }
         );
     }
@@ -74,6 +74,7 @@ export class RegisterUserComponent implements OnInit {
       } else {
         passwordConfirmationInput.setErrors(null);
       }
+      console.log('check');
     };
   }
 

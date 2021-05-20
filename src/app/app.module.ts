@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { Error404Component } from './error/error404/error404.component';
 import { BecomeCoachComponent } from './user/become-coach/become-coach.component';
+import { RequestSessionComponent } from './session/request-session/request-session.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { BecomeCoachComponent } from './user/become-coach/become-coach.component
     HomeComponent,
     UserProfileComponent,
     Error404Component,
-    BecomeCoachComponent
+    BecomeCoachComponent,
+    RequestSessionComponent
   ],
   imports: [
     BrowserModule,

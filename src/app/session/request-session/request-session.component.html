@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12 m12">
+
+      <h1 class="center teal-text lighten-3">Request a session</h1>
+      <div class="content-container-with-padding z-depth-4">
+
+        <div class="row">
+          <form class="col s12" [formGroup]="requestSessionForm" (ngSubmit)="submit()">
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="topic" type="text" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
+                 && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}"/>
+                <label for="topic">On which topic/subject would you like to have a coaching session?</label>
+                <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">
+                  Topic is required.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <!--                type="text" class="datepicker"-->
+                <input id="date" type="date" class="datepicker" formControlName="date"
+                       [ngClass]="{'is-invalid':fc('date')?.errors
+                 && (fc('date')?.dirty || fc('date')?.touched) || hasSubmitFailed}">
+                <label for="date">Date</label>
+                <div class="invalid-feedback mb-2" *ngIf="fc('date')?.errors">
+                  Valid date is required.
+                </div>
+              </div>
+              <div class="input-field col s6">
+                <input id="timepicker" type="time" formControlName="time"
+                       [ngClass]="{'is-invalid':fc('time')?.errors
+                 && (fc('time')?.dirty || fc('time')?.touched) || hasSubmitFailed}">
+                <label for="timepicker">Time</label>
+                <div class="invalid-feedback mb-2" *ngIf="fc('date')?.errors">
+                  <!--*ngIf="requestSessionForm.hasError('earlierThanNow','time')
+                 && (fc('time')?.dirty || fc('time')?.touched)">-->
+                  Valid time is required (can not be earlier than now).
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+
+              <div class="input-field col s12">
+                <select id="location" formControlName="location" [ngClass]="{'is-invalid':fc('location')?.errors
+                 && (fc('location')?.dirty || fc('location')?.touched) || hasSubmitFailed}">
+                  <option value="" disabled selected>Choose your option</option>
+                  <option value="online">Online</option>
+                  <option value="f2f">Face to face</option>
+                </select>
+                <label for="location">Location</label>
+                <div class="invalid-feedback mb-2" *ngIf="fc('location')?.errors">
+                  Location is required.
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="remarks" type="text" formControlName="remarks">
+                <label for="remarks">Remarks for the coach?</label>
+              </div>
+            </div>
+            <div class="row right-align">
+              <button class="waves-effect waves-light yellow darken-2 btn-large black-text" type="submit">
+                Request session
+                <i class="material-icons right">send</i></button>
+            </div>
+            <p>{{this.requestSessionForm.value | json }}</p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
