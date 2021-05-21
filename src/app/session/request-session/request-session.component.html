@@ -9,21 +9,34 @@
           <form class="col s12" [formGroup]="requestSessionForm" (ngSubmit)="submit()">
             <div class="row">
               <div class="input-field col s12">
+                <select id="topic" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
+                 && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}">
+                  <option value="" disabled selected> Choose your topic </option>
+                  <option *ngFor="let topic of coachTopics" [value]="topic"> {{topic}}</option>
+                </select>
+                <label for="topic">Topic</label>
+                <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">
+                  Topic is required.
+                </div>
+              </div>
+
+<!--
+              <div class="input-field col s12">
                 <input id="topic" type="text" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
                  && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}"/>
                 <label for="topic">On which topic/subject would you like to have a coaching session?</label>
                 <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">
                   Topic is required.
                 </div>
-              </div>
+              </div>-->
             </div>
             <div class="row">
               <div class="input-field col s6">
                 <!--                type="text" class="datepicker"-->
-                <input type="text" class="datepicker" formControlName="date"
+                <input id="date" type="date"  formControlName="date"
                        [ngClass]="{'is-invalid':fc('date')?.errors
                  && (fc('date')?.dirty || fc('date')?.touched) || hasSubmitFailed}">
-                <label>Date</label>
+                <label for="date">Date</label>
                 <div class="invalid-feedback mb-2" *ngIf="fc('date')?.errors">
                   Valid date is required.
                 </div>
@@ -46,9 +59,9 @@
               <div class="input-field col s12">
                 <select id="location" formControlName="location" [ngClass]="{'is-invalid':fc('location')?.errors
                  && (fc('location')?.dirty || fc('location')?.touched) || hasSubmitFailed}">
-                  <option value="" disabled selected>Choose your option</option>
+                  <option value="" disabled selected>Choose your location</option>
                   <option value="online">Online</option>
-                  <option value="f2f">Face to face</option>
+                  <option value="face2face">Face to face</option>
                 </select>
                 <label for="location">Location</label>
                 <div class="invalid-feedback mb-2" *ngIf="fc('location')?.errors">

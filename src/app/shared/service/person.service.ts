@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {Person} from '../model/person';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,12 @@ export class PersonService {
   findById(id: string): Observable<Person> {
     return this._http.get<Person>(`${this._url}/${id}`);
   }
+/* delete if story 13 successful
+  findCoachingTopicsById(id: string): Observable<string[]>{
+    return this.findById(id).pipe(
+      map( (coach: Person) => coach.coachingTopics )
+    );
+  }*/
 
   becomeCoach(id: string, coachData: FormData): Observable<any> {
     return this._http.post(`${this._url}/${id}/become-coach`, coachData);

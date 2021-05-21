@@ -34,3 +34,20 @@ $(document).ready(function() {
     autoClose: true
   });
 });
+/*
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var options =  {
+      defaultDate: new Date(currDate),
+      setDefaultDate: false,
+      minDate: new Date(currDate),
+      maxDate: new Date(currYear+1,12,31),
+      yearRange: [currYear, currYear+1],
+      format: "dd/mm/yyyy",
+      autoClose: true
+    }
+    var instances = M.Datepicker.init(elems, options);
+  });
+*/
