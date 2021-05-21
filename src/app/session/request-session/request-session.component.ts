@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ScriptService} from '../../shared/service/script/script.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {SessionService} from '../../shared/service/session.service';
 import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
-import {Coach} from '../../shared/model/coach';
 
 @Component({
   selector: 'app-request-session',
@@ -21,15 +20,17 @@ export class RequestSessionComponent implements OnInit {
   private _coachIdFromRoute!: string;
   private userIdFromSessionTempHardCoded = 'e920deb1-6f95-4902-9bf7-e0f501b59198';
 
-  private readonly _requestSessionForm = this._formBuilder.group({
-      topic: ['', [Validators.required]],
-      date: ['', [Validators.required]],
-      time: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      remarks: ''
-    }
-    // ,    {validator: this._checkifValidTime('time', 'date')    }
-  );
+  _requestSessionForm!: FormGroup;
+
+  // private readonly _requestSessionForm = this._formBuilder.group({
+  //     topic: ['', [Validators.required]],
+  //     date: ['', [Validators.required]],
+  //     time: ['', [Validators.required]],
+  //     location: ['', [Validators.required]],
+  //     remarks: ''
+  //   }
+  //   // ,    {validator: this._checkifValidTime('time', 'date')    }
+  // );
 
   constructor(private _scriptService: ScriptService,
               private _formBuilder: FormBuilder,
@@ -45,7 +46,17 @@ export class RequestSessionComponent implements OnInit {
     const routeParams = this._activatedRoute.snapshot.paramMap;
     this._coachIdFromRoute = String(routeParams.get('coachId'));
     // tslint:disable-next-line:max-line-length
-    this._personService.findById(this._coachIdFromRoute).subscribe((coach) => (this._coach = coach));
+    this._personService.findById(this._coachIdFromRoute).subscribe((coach) => { this._coach = coach; });
+
+    this._requestSessionForm = this._formBuilder.group({
+        topic: ['', [Validators.required]],
+        date: ['', [Validators.required]],
+        time: ['', [Validators.required]],
+        location: ['', [Validators.required]],
+        remarks: ''
+      }
+      // ,    {validator: this._checkifValidTime('time', 'date')    }
+    );
   }
 
   fc(controlName: string): AbstractControl | null {
@@ -69,8 +80,8 @@ export class RequestSessionComponent implements OnInit {
   }
 
   get coachTopics(): string[]{
-    return ['mock1', 'mock2', 'when backend is implemented', 'update get coachTopics()', 'it is ready :)' ];
-    // return this._coach.coachingTopics.map(coachingTopic => coachingTopic.subject);
+    // return ['mock1', 'mock2', 'when backend is implemented', 'update get coachTopics()', 'it is ready :)' ];
+    return this._coach.coachingTopics.map(coachingTopic => coachingTopic.topic);
   }
 
   get requestSessionForm(): FormGroup {
