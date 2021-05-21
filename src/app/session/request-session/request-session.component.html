@@ -20,10 +20,10 @@
             <div class="row">
               <div class="input-field col s6">
                 <!--                type="text" class="datepicker"-->
-                <input id="date" type="date" class="datepicker" formControlName="date"
+                <input type="text" class="datepicker" formControlName="date"
                        [ngClass]="{'is-invalid':fc('date')?.errors
                  && (fc('date')?.dirty || fc('date')?.touched) || hasSubmitFailed}">
-                <label for="date">Date</label>
+                <label>Date</label>
                 <div class="invalid-feedback mb-2" *ngIf="fc('date')?.errors">
                   Valid date is required.
                 </div>

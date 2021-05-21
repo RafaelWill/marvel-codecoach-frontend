@@ -10,6 +10,7 @@ import {SessionService} from '../../shared/service/session.service';
   templateUrl: './request-session.component.html',
   styleUrls: ['./request-session.component.css']
 })
+
 export class RequestSessionComponent implements OnInit {
 
   hasSubmitFailed!: boolean;
