@@ -30,7 +30,7 @@ export class BecomeCoachComponent implements OnInit {
       .subscribe(person => this._person = person);
 
     this._becomeCoachForm = this._formBuilder.group({
-      motivation: '',
+      motivation: ['', [Validators.required] ],
       topic: ['', [Validators.required]],
       grade: ['', [Validators.required]],
       extraTopics: this._formBuilder.array([]),

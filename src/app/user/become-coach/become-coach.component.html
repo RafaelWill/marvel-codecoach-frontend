@@ -15,7 +15,7 @@
       <h6>My Profile</h6>
       <div class="collection">
         <a [routerLink]="['../../id']" class="collection-item grey-text text-darken-2">Profile Information</a>
-        <a class="collection-item grey-text text-darken-2">Coaching sessions</a>
+<!--        <a class="collection-item grey-text text-darken-2">Coaching sessions</a>-->
         <a class="collection-item black-text active yellow darken-2">Apply to become a coach</a>
       </div>
     </div>
@@ -30,9 +30,13 @@
           <div class="row">
             <div class="col l2 m2 s12">
               <div class="input-field col s12">
-                <textarea id="motivation" class="materialize-textarea" data-length="120"
-                          formControlName="motivation"></textarea>
+                <textarea id="motivation" class="materialize-textarea" data-length="255"
+                          formControlName="motivation" [ngClass]="{'is-invalid':fc('motivation')?.errors
+                 && (fc('motivation')?.dirty || fc('motivation')?.touched) || hasSubmitFailed}"></textarea>
                 <label for="motivation">Motivation</label>
+                <div class="invalid-feedback mb-2" *ngIf="fc('motivation')?.errors">
+                  Motivation is required.
+                </div>
               </div>
               <div class="input-field col s6">
                 <input id="topic" type="text" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
