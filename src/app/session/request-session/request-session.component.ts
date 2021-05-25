@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ScriptService} from '../../shared/service/script/script.service';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {SessionService} from '../../shared/service/session.service';
 import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
+import {InitService} from '../../shared/materialize/init.service';
 
 @Component({
   selector: 'app-request-session',
@@ -13,7 +13,7 @@ import {Person} from '../../shared/model/person';
   styleUrls: ['./request-session.component.css']
 })
 
-export class RequestSessionComponent implements OnInit {
+export class RequestSessionComponent implements OnInit, AfterViewInit {
 
   hasSubmitFailed!: boolean;
   private _coach!: Person;
@@ -32,7 +32,7 @@ export class RequestSessionComponent implements OnInit {
   //   // ,    {validator: this._checkifValidTime('time', 'date')    }
   // );
 
-  constructor(private _scriptService: ScriptService,
+  constructor(private _initService: InitService,
               private _formBuilder: FormBuilder,
               private _activatedRoute: ActivatedRoute,
               private _router: Router,
@@ -41,7 +41,6 @@ export class RequestSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._scriptService.load('init');
     this.hasSubmitFailed = false;
     const routeParams = this._activatedRoute.snapshot.paramMap;
     this._coachIdFromRoute = String(routeParams.get('coachId'));
@@ -57,6 +56,10 @@ export class RequestSessionComponent implements OnInit {
       }
       // ,    {validator: this._checkifValidTime('time', 'date')    }
     );
+  }
+
+  ngAfterViewInit(): void {
+    this._initService.initFormSelect();
   }
 
   fc(controlName: string): AbstractControl | null {

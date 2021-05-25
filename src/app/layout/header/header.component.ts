@@ -8,8 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
 
-   userIdFromSessionTempHardCoded = 'e920deb1-6f95-4902-9bf7-e0f501b59198';
-   coachIdFromOverviewTempHardCoded = 'e920deb1-6f95-4902-9bf7-e0f501b59198';
+   userIdFromSessionTempHardCoded = 'ee1c4817-ec86-42cb-88e0-381a45e6e2ad';
+   coachIdFromOverviewTempHardCoded = 'ee1c4817-ec86-42cb-88e0-381a45e6e2ad';
 
   constructor() { }
 

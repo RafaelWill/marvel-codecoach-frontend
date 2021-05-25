@@ -19,6 +19,8 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
+    "@types/jquery": "^3.5.0",
+    "@types/materialize-css": "^1.0.8",
     "bootstrap": "^4.6.0",
     "jquery": "^3.6.0",
     "material-icons": "^0.6.3",
