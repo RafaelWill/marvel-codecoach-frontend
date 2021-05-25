@@ -7,10 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-
-   userIdFromSessionTempHardCoded = 'e920deb1-6f95-4902-9bf7-e0f501b59198';
-   coachIdFromOverviewTempHardCoded = 'e920deb1-6f95-4902-9bf7-e0f501b59198';
-
   constructor() { }
 
   ngOnInit(): void {
