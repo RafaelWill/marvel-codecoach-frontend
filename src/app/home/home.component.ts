@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import {ScriptService} from '../shared/service/script/script.service';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {InitService} from '../shared/materialize/init.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
 
-  constructor(private _scriptService: ScriptService) { }
+  constructor(private _initService: InitService) { }
 
   ngOnInit(): void {
-    this._scriptService.load('init');
   }
 
+  ngAfterViewInit(): void {
+    this._initService.initParalax();
+  }
 
 }
