@@ -59,7 +59,6 @@ export class BecomeCoachComponent implements OnInit {
     this.extraTopics.at(this.extraTopics.length - 1).markAsUntouched({onlySelf: true});
     this.extraGrades.push(this._formBuilder.control('', [Validators.required]));
     this.extraGrades.at(this.extraGrades.length - 1).markAsUntouched({onlySelf: true});
-
   }
 
   deleteSlot(): void {
