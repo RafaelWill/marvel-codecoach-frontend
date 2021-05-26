@@ -30,6 +30,10 @@ export class PersonService {
     );
   }*/
 
+  getAllCoaches(): Observable<Array<Person>>{
+    return this._http.get<Array<Person>>(`${this._url}/coaches`);
+  }
+
   becomeCoach(id: string, coachData: FormData): Observable<any> {
     return this._http.post(`${this._url}/${id}/become-coach`, coachData);
   }
