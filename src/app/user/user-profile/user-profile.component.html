@@ -24,7 +24,12 @@
     <div class="col-9 s12 m10">
       <div class="content-container">
 
-        <section class="card-panel grey lighten-5">
+        <div class="center mt-5" *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+
+        <section class="card-panel grey lighten-5" *ngIf="!isLoading">
+
 <!--          <div class="right">-->
 <!--            <a class="waves-effect waves-light btn-large btn-floating yellow darken-2"><i-->
 <!--              class="material-icons left">edit</i>Edit</a>-->

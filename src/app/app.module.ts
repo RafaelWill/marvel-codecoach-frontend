@@ -13,6 +13,7 @@ import { Error404Component } from './error/error404/error404.component';
 import { BecomeCoachComponent } from './user/become-coach/become-coach.component';
 import { RequestSessionComponent } from './session/request-session/request-session.component';
 import { JoinPipe } from './shared/pipe/join.pipe';
+import { LoadingSpinnerComponent } from './shared/util/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { JoinPipe } from './shared/pipe/join.pipe';
     Error404Component,
     BecomeCoachComponent,
     RequestSessionComponent,
-    JoinPipe
+    JoinPipe,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
