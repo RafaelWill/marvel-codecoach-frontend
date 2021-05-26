@@ -1,0 +1,65 @@
+<div class="min-vh-100">
+  <div class="nav-content yellow darken-2">
+    <div class="container">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a class="black-text text-darken-2">My Profile</a></li>
+        <li class="tab"><a class="grey-text text-darken-2" >Find a coach</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="center mt-5" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <div class="row" *ngIf="!isLoading">
+  <div class="row justify-content-center" *ngIf="coaches.length === 0">
+    <h4 class="center teal-text lighten-3">No coaches found</h4>
+  </div>
+
+    <div *ngFor="let coach of coaches" class="col-md-3" >
+      <div>
+        <h5 class="header">{{coach.firstName}} {{coach.lastName}}</h5>
+        <div class="card horizontal" style="flex-direction:row;">
+          <div class="align-content-center col-sm-4" style="margin-top: 15px;">
+            <img src="assets/images/dummy/dummy-profile-pic.png" class="responsive-img circle">
+          </div>
+          <div class="card-stacked col-sm-8">
+            <div class="">
+              <table class="highlight responsive-table">
+                <tbody *ngFor="let topic of coach.coachingTopics.slice(0,2); let i=index">
+                <tr *ngIf="coach.coachingTopics.length >=2; else empty_topic">
+                  <td><strong>{{topic.topic}}</strong></td>
+                  <td>{{topic.grade}}</td>
+                </tr>
+                <ng-template #empty_topic>
+                  <tr>
+                    <td><strong>{{topic.topic}}</strong></td>
+                    <td>{{topic.grade}}</td>
+                  </tr>
+                  <tr style="border-bottom : none" class="emptytopic">
+                    <td><strong>&nbsp;</strong></td>
+                  </tr>
+                </ng-template>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="coach.coachingTopics.length >= 3;else other_content">
+              <span data-toggle="tooltip"
+                    title="{{coach.coachingTopics.slice(2) | jointopic : ', '}}">+ {{coach.coachingTopics.length - 2}}
+                more</span>
+            </div>
+            <ng-template #other_content>
+              <div>
+                <span>&nbsp;</span>
+              </div>
+            </ng-template>
+            <a class="btn-floating halfway-fab waves-effect waves-light yellow darken-2 btn-large"
+               routerLink="../../sessions/{{coach.id}}/request-session"><i
+              class="material-icons">send</i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
