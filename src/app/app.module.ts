@@ -12,6 +12,8 @@ import { UserProfileComponent } from './user/user-profile/user-profile.component
 import { Error404Component } from './error/error404/error404.component';
 import { BecomeCoachComponent } from './user/become-coach/become-coach.component';
 import { RequestSessionComponent } from './session/request-session/request-session.component';
+import { JoinPipe } from './shared/pipe/join.pipe';
+import { LoadingSpinnerComponent } from './shared/util/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { RequestSessionComponent } from './session/request-session/request-sessi
     UserProfileComponent,
     Error404Component,
     BecomeCoachComponent,
-    RequestSessionComponent
+    RequestSessionComponent,
+    JoinPipe,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

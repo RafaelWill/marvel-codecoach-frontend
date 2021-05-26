@@ -10,6 +10,7 @@ import {PersonService} from '../../shared/service/person.service';
 })
 export class UserProfileComponent implements OnInit {
   private _person!: Person;
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,7 +22,13 @@ export class UserProfileComponent implements OnInit {
     const personIdFromRoute = String(routeParams.get('id'));
     this.personService
       .findById(personIdFromRoute)
-      .subscribe(person => this._person = person);
+      .subscribe(person => { this._person = person;
+                             this.isLoading = false; },
+                  error => { console.log(error);
+                             this.isLoading = false; });
   }
 
+  get person(): Person {
+    return this._person;
+  }
 }
