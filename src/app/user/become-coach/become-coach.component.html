@@ -1,14 +1,14 @@
 <div class="min-vh-100">
-<div class="nav-content yellow darken-2">
-  <div class="container">
-    <ul class="tabs tabs-transparent">
-      <li class="tab"><a class="black-text text-darken-2">My Profile</a></li>
-      <!--      <li class="tab"><a class="grey-text text-darken-2" routerLink= routerLinkActive="black-text">Find a coach</a></li>-->
-    </ul>
+  <div class="nav-content yellow darken-2">
+    <div class="container">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a class="black-text text-darken-2">My Profile</a></li>
+        <!--      <li class="tab"><a class="grey-text text-darken-2" routerLink= routerLinkActive="black-text">Find a coach</a></li>-->
+      </ul>
+    </div>
   </div>
-</div>
 
-<div class="row">
+  <div class="row">
 
   <div class="col-3 s12 m2">
     <div class="content-container">
@@ -21,59 +21,54 @@
     </div>
   </div>
 
-  <div class="col-9 s12 2">
-    <div class="content-container">
-      <section class="card-panel grey lighten-5">
-        <h5>Apply to become a coach</h5>
-        <div class="divider"></div>
-        <form [formGroup]="becomeCoachForm" (ngSubmit)="submit()">
-          <div class="row">
-            <div class="col l2 m2 s12">
-              <div class="input-field col s12">
+    <div class="col-9 s12 2">
+      <div class="content-container">
+        <section class="card-panel grey lighten-5">
+          <h5>Apply to become a coach</h5>
+          <div class="divider"></div>
+          <form [formGroup]="becomeCoachForm" (ngSubmit)="submit()">
+            <div class="row">
+              <div class="col l2 m2 s12">
+                <div class="input-field col s12">
                 <textarea id="motivation" class="materialize-textarea" data-length="255"
                           formControlName="motivation" [ngClass]="{'is-invalid':fc('motivation')?.errors
                  && (fc('motivation')?.dirty || fc('motivation')?.touched) || hasSubmitFailed}"></textarea>
-                <label for="motivation">Motivation</label>
-                <div class="invalid-feedback mb-2" *ngIf="fc('motivation')?.errors">
-                  Motivation is required.
+                  <label for="motivation">Motivation</label>
+                  <div class="invalid-feedback mb-2" *ngIf="fc('motivation')?.errors">
+                    Motivation is required.
+                  </div>
                 </div>
-              </div>
-              <div class="input-field col s6">
-                <input id="topic" type="text" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
-                 && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}">
-                <label for="topic">Topic</label>
-                <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">
-                  Topic is required.
+                <div class="input-field col s6">
+                  <input id="topic" type="text" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
+                        && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}">
+                  <label for="topic">Topic</label>
+                  <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">
+                    Topic is required.
+                  </div>
+                  <div formArrayName="extraTopics" *ngFor="let topic of extraTopics?.controls; let i=index">
+                    <input type="text"
+                           [formControlName]="i"
+                           [ngClass]="{'is-invalid':fc('extraTopics.' + i)?.errors
+                              && (fc('extraTopics.' + i)?.dirty
+                                || fc('extraTopics.' + i)?.touched)
+                                || hasSubmitFailed}">
+                    <div class="invalid-feedback mb-2" *ngIf="fc('extraTopics.' + i)?.errors">
+                      Topic is required.
+                    </div>
+                  </div>
+                  <button type="button" class="waves-effect waves-light btn-small yellow darken-2 black-text"
+                          (click)="addSlot()">
+                    Add topic
+                  </button>
+                  <button *ngIf="extraTopics.length != 0" type="button"
+                          class="ml-1 waves-effect waves-light btn-small yellow darken-2 black-text"
+                          (click)="deleteSlot()">
+                    Delete topic
+                  </button>
                 </div>
-                <div formArrayName="extraTopics" *ngFor="let topic of extraTopics?.controls; let i=index">
-                  <input type="text" [formControlName]="i">
-                </div>
-                <button type="button" class="waves-effect waves-light btn-small yellow darken-2 black-text"
-                        (click)="addSlot()">
-                  Add topic
-                </button>
-                <button *ngIf="extraTopics.length != 0" type="button" class="ml-1 waves-effect waves-light btn-small yellow darken-2 black-text"
-                        (click)="deleteSlot()">
-                  Delete topic
-                </button>
-              </div>
-              <div class="input-field col s6">
-                <select class="mb-3" style="display: block" id="grade" formControlName="grade" [ngClass]="{'is-invalid':fc('grade')?.errors
+                <div class="input-field col s6">
+                  <select class="mb-3" style="display: block" id="grade" formControlName="grade" [ngClass]="{'is-invalid':fc('grade')?.errors
                                && (fc('grade')?.dirty || fc('grade')?.touched) || hasSubmitFailed}">
-                  <option value="" disabled selected>Choose your grade</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                </select>
-                <label for="grade"></label>
-                <div class="invalid-feedback mb-2" *ngIf="fc('grade')?.errors">
-                  Grade is required.
-                </div>
-                <div formArrayName="extraGrades" *ngFor="let grade of extraGrades?.controls; let i=index">
-                  <select class="mb-2" style="display: block" [formControlName]="i">
                     <option value="" disabled selected>Choose your grade</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -82,17 +77,38 @@
                     <option value="5">5</option>
                     <option value="6">6</option>
                   </select>
+                  <label for="grade"></label>
+                  <div class="invalid-feedback mb-2" *ngIf="fc('grade')?.errors">
+                    Grade is required.
+                  </div>
+                  <div formArrayName="extraGrades" *ngFor="let grade of extraGrades?.controls; let i=index">
+                    <select class="mb-2" style="display: block" [formControlName]="i"
+                            [ngClass]="{'is-invalid':fc('extraGrades.' + i)?.errors
+                              && (fc('extraGrades.' + i)?.dirty
+                                || fc('extraGrades.' + i)?.touched)
+                                || hasSubmitFailed}">>
+                      <option value="" disabled selected>Choose your grade</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                    </select>
+                    <div class="invalid-feedback mb-2" *ngIf="fc('extraGrades.' + i)?.errors">
+                      Grade is required.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row right-align justify-content-center">
-            <button type="submit" class="waves-effect waves-light yellow darken-2 btn-large black-text">Send Email <i
-              class="material-icons right">send</i></button>
-          </div>
-        </form>
-      </section>
+            <div class="row right-align justify-content-center">
+              <button type="submit" class="waves-effect waves-light yellow darken-2 btn-large black-text">Send Email <i
+                class="material-icons right">send</i></button>
+            </div>
+          </form>
+        </section>
+      </div>
     </div>
   </div>
-</div>
 </div>
