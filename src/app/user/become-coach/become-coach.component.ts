@@ -46,30 +46,28 @@ export class BecomeCoachComponent implements OnInit {
     return this._becomeCoachForm;
   }
 
-  // tslint:disable-next-line:typedef
-  get extraTopics() {
+  get extraTopics(): FormArray {
     return this._becomeCoachForm.get('extraTopics') as FormArray;
   }
 
-  // tslint:disable-next-line:typedef
-  get extraGrades() {
+  get extraGrades(): FormArray {
     return this._becomeCoachForm.get('extraGrades') as FormArray;
   }
 
-  // tslint:disable-next-line:typedef
-  addSlot() {
-    this.extraTopics.push(this._formBuilder.control(''));
-    this.extraGrades.push(this._formBuilder.control(''));
+  addSlot(): void {
+    this.extraTopics.push(this._formBuilder.control('', [Validators.required]));
+    this.extraTopics.at(this.extraTopics.length - 1).markAsUntouched({onlySelf: true});
+    this.extraGrades.push(this._formBuilder.control('', [Validators.required]));
+    this.extraGrades.at(this.extraGrades.length - 1).markAsUntouched({onlySelf: true});
+
   }
 
-  // tslint:disable-next-line:typedef
-  deleteSlot() {
+  deleteSlot(): void {
     this.extraTopics.removeAt(length - 1);
     this.extraGrades.removeAt(length - 1);
   }
 
-  // tslint:disable-next-line:typedef
-  submit() {
+  submit(): void {
     if (this._becomeCoachForm.valid) {
       this.becomeACoach().subscribe(
         () =>  {
