@@ -24,4 +24,7 @@ export class UserProfileComponent implements OnInit {
       .subscribe(person => this._person = person);
   }
 
+  get person(): Person {
+    return this._person;
+  }
 }

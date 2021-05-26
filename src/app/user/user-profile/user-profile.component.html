@@ -9,6 +9,7 @@
   </div>
 
   <div class="row">
+
     <div class="col-3 s12 m2">
       <div class="content-container">
         <h6>My Profile</h6>
@@ -17,6 +18,53 @@
           <!--        <a class="collection-item grey-text text-darken-2">Coaching sessions</a>-->
           <a routerLink="become-coach" class="collection-item grey-text text-darken-2">Apply to become a coach</a>
         </div>
+      </div>
+    </div>
+
+    <div class="col-9 s12 m10">
+      <div class="content-container">
+
+        <section class="card-panel grey lighten-5">
+<!--          <div class="right">-->
+<!--            <a class="waves-effect waves-light btn-large btn-floating yellow darken-2"><i-->
+<!--              class="material-icons left">edit</i>Edit</a>-->
+<!--          </div>-->
+          <h5>Profile Information</h5>
+          <div class="divider"></div>
+          <div class="row justify-content-center" *ngIf="!person">
+            <h4 class="center teal-text lighten-3">No person found</h4>
+          </div>
+
+          <div class="row" *ngIf="person">
+            <div class="col-3 l4 m4 s12">
+              <img src="assets/images/dummy/dummy-profile-pic.png" class="responsive-img circle"
+                   alt="Profile Picture">
+            </div>
+            <div class="col-9 l10 m12 s12">
+              <table  class="highlight">
+                <tbody>
+                <tr>
+                  <td><strong>First name</strong></td>
+                  <td>{{person.firstName}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Last name</strong></td>
+                  <td>{{person.lastName}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Email</strong></td>
+                  <td>{{person.email}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Code Coach role</strong></td>
+                  <td>{{person.roles | join:', ' | lowercase }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </div>
