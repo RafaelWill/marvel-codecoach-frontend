@@ -16,6 +16,7 @@ import { CoachesOverviewComponent } from './user/coaches-overview/coaches-overvi
 import { JoinPipe } from './shared/pipe/join.pipe';
 import { JointopicPipe } from './shared/pipe/jointopic.pipe';
 import { LoadingSpinnerComponent } from './shared/util/loading-spinner/loading-spinner.component';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { LoadingSpinnerComponent } from './shared/util/loading-spinner/loading-s
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

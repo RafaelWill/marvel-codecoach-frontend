@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {Person} from '../../shared/model/person';
 import {PersonService} from '../../shared/service/person.service';
 import {CoachingTopic} from '../../shared/model/coaching-topic';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-coaches-overview',
@@ -12,6 +13,7 @@ import {CoachingTopic} from '../../shared/model/coaching-topic';
 export class CoachesOverviewComponent implements OnInit {
   private _coaches: Array<Person> = [];
   isLoading = true;
+
 
   constructor(private service: PersonService) {
   }
