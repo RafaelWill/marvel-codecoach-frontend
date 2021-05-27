@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -38,20 +46,20 @@ export class BecomeCoachComponent implements OnInit {
     });
   }
 
-  get person(): Person {
-    return this._person;
-  }
-
-  get becomeCoachForm(): FormGroup {
-    return this._becomeCoachForm;
-  }
-
-  get extraTopics(): FormArray {
-    return this._becomeCoachForm.get('extraTopics') as FormArray;
-  }
-
-  get extraGrades(): FormArray {
-    return this._becomeCoachForm.get('extraGrades') as FormArray;
+  // TODO refactor of form needed to make this work properly
+  duplicateTopicValidator(index: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      let duplicateValue = false;
+      for (let i = 0; i < index; i++){
+        if (this.extraTopics.at(i).value === control.value){
+          duplicateValue = true;
+        }
+      }
+      if (this.fc('topic')?.value === control.value){
+        duplicateValue = true;
+      }
+      return duplicateValue ? {duplicateTopic: {value: control.value}} : null;
+    };
   }
 
   addSlot(): void {
@@ -83,5 +91,21 @@ export class BecomeCoachComponent implements OnInit {
 
   fc(controlName: string): AbstractControl | null {
     return this._becomeCoachForm.get(controlName);
+  }
+
+  get person(): Person {
+    return this._person;
+  }
+
+  get becomeCoachForm(): FormGroup {
+    return this._becomeCoachForm;
+  }
+
+  get extraTopics(): FormArray {
+    return this._becomeCoachForm.get('extraTopics') as FormArray;
+  }
+
+  get extraGrades(): FormArray {
+    return this._becomeCoachForm.get('extraGrades') as FormArray;
   }
 }
