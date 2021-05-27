@@ -4,6 +4,7 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Person} from '../../shared/model/person';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-register-user',
@@ -27,14 +28,18 @@ export class RegisterUserComponent implements OnInit {
       },
       {validator: this.checkIfMatchingPasswords('password', 'confirmedPassword')})
   });
+  private _date: Date | undefined;
 
   constructor(private _personService: PersonService,
               private _formBuilder: FormBuilder,
-              private _router: Router) {
+              private _router: Router,
+              private _cookieService: CookieService) {
   }
 
   ngOnInit(): void {
     this._registrationForm.reset();
+    this._date = new Date();
+    this._date.setDate( this._date.getDate() + 3 );
   }
 
   addPerson(): Observable<Person> {
@@ -47,10 +52,15 @@ export class RegisterUserComponent implements OnInit {
       this.addPerson()
         .subscribe((personRegistered) => {
             this._registrationForm.reset();
+            this.setCookie(personRegistered.id);
             this._router.navigate(['users/' + personRegistered.id]);
           }
         );
     }
+  }
+
+  private setCookie(userid: string): void{
+    this._cookieService.set('userid', userid, this._date, '/', 'localhost');
   }
 
   fc(controlName: string): AbstractControl | null {
