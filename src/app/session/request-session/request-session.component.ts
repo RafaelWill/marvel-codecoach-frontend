@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {SessionService} from '../../shared/service/session.service';
 import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
 import {InitService} from '../../shared/materialize/init.service';
+import {CookieService} from 'ngx-cookie-service';
+import {CoachingTopic} from '../../shared/model/coaching-topic';
 
 @Component({
   selector: 'app-request-session',
@@ -18,7 +20,7 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   hasSubmitFailed!: boolean;
   private _coach!: Person;
   private _coachIdFromRoute!: string;
-  private userIdFromSessionTempHardCoded = 'e920deb1-6f95-4902-9bf7-e0f501b59198';
+  private userId = '';
 
   _requestSessionForm!: FormGroup;
 
@@ -37,10 +39,12 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
               private _activatedRoute: ActivatedRoute,
               private _router: Router,
               private _sessionService: SessionService,
-              private _personService: PersonService) {
+              private _personService: PersonService,
+              private _cookieService: CookieService) {
   }
 
   ngOnInit(): void {
+    this.userId = this._cookieService.get('userid');
     this.hasSubmitFailed = false;
     const routeParams = this._activatedRoute.snapshot.paramMap;
     this._coachIdFromRoute = String(routeParams.get('coachId'));
@@ -68,10 +72,11 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
 
   submit(): void {
     if (this._requestSessionForm.valid) {
+      this._requestSessionForm.addControl('coacheeId', new FormControl(this.userId));
       this.requestSession().subscribe(
         () => {
           this._requestSessionForm.reset();
-          this._router.navigate([`users/${this.userIdFromSessionTempHardCoded}`]);
+          this._router.navigate([`users/${this.userId}`]);
         });
     } else {
       this.hasSubmitFailed = true;
@@ -79,12 +84,12 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   }
 
   private requestSession(): Observable<any> {
-    return this._sessionService.save(this._requestSessionForm.value, this._coachIdFromRoute);
+    return this._sessionService.save(this._requestSessionForm.value);
   }
 
-  get coachTopics(): string[]{
+  get coachTopics(): CoachingTopic[]{
     // return ['mock1', 'mock2', 'when backend is implemented', 'update get coachTopics()', 'it is ready :)' ];
-    return this._coach.coachingTopics.map(coachingTopic => coachingTopic.topic);
+    return this._coach.coachingTopics;
   }
 
   get requestSessionForm(): FormGroup {
