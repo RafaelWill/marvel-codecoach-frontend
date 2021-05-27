@@ -12,7 +12,7 @@
                 <select id="topic" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
                  && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}">
                   <option value="" disabled selected> Choose your topic </option>
-                  <option *ngFor="let topic of coachTopics" [value]="topic"> {{topic}}</option>
+                  <option *ngFor="let topic of coachTopics" [value]="topic.id"> {{topic.topic}}</option>
                 </select>
                 <label for="topic">Topic</label>
                 <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">

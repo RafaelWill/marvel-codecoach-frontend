@@ -14,7 +14,7 @@ export class SessionService {
     this._url = `${environment.backendUrl}/sessions`;
   }
 
-  save(sessionData: FormData, coachId: string): Observable<any> {
-    return this._http.post<any>(`${this._url}/${coachId}/request-session`, sessionData);
+  save(sessionData: FormData): Observable<any> {
+    return this._http.post<any>(`${this._url}`, sessionData);
   }
 }
