@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {InitService} from '../shared/materialize/init.service';
-import {PersonService} from '../shared/service/person.service';
 import {CookieService} from 'ngx-cookie-service';
 
 @Component({
