@@ -5,6 +5,6 @@ export interface Person {
   email: string;
   firstName: string;
   lastName: string;
-  coachingTopics: CoachingTopic[];
+  coachingTopics: Array<CoachingTopic>;
   roles: string[];
 }

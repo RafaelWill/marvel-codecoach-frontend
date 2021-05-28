@@ -57,4 +57,34 @@ export class InitService {
       M.Modal.init(document.querySelectorAll('.modal'));
     }, 1);
   }
+
+  initDatepicker(): void{
+    setTimeout( () => {
+      console.log('init datepicker');
+      const currDate = (new Date());
+      const currYear = (new Date()).getFullYear();
+      const options = {
+        defaultDate: new Date(currDate),
+        setDefaultDate: false,
+        minDate: new Date(currDate),
+        maxDate: new Date(currYear + 1, 12, 31),
+        yearRange: [currYear, currYear + 1],
+        format: 'dd/mm/yyyy',
+        autoClose: true
+      };
+      M.Datepicker.init(document.querySelectorAll('.datepicker'), options);
+    }, 1);
+  }
+
+  initTimepicker(): void{
+    const options = {
+      twelveHour: false,
+      autoClose: true
+    };
+    setTimeout( () => {
+    console.log('init timepicker');
+    M.Timepicker.init(document.querySelectorAll('.timepicker'), options);
+    }, 1);
+  }
+
 }

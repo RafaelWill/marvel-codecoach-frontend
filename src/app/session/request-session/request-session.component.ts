@@ -22,17 +22,15 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   private _coachIdFromRoute!: string;
   private userId = '';
 
-  _requestSessionForm!: FormGroup;
-
-  // private readonly _requestSessionForm = this._formBuilder.group({
-  //     topic: ['', [Validators.required]],
-  //     date: ['', [Validators.required]],
-  //     time: ['', [Validators.required]],
-  //     location: ['', [Validators.required]],
-  //     remarks: ''
-  //   }
-  //   // ,    {validator: this._checkifValidTime('time', 'date')    }
-  // );
+  private readonly _requestSessionForm = this._formBuilder.group({
+      topic: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      time: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      remarks: ''
+    }
+    // ,    {validator: this._checkifValidTime('time', 'date')    }
+  );
 
   constructor(private _initService: InitService,
               private _formBuilder: FormBuilder,
@@ -49,21 +47,13 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
     const routeParams = this._activatedRoute.snapshot.paramMap;
     this._coachIdFromRoute = String(routeParams.get('coachId'));
     // tslint:disable-next-line:max-line-length
-    this._personService.findById(this._coachIdFromRoute).subscribe((coach) => { this._coach = coach; });
-
-    this._requestSessionForm = this._formBuilder.group({
-        topic: ['', [Validators.required]],
-        date: ['', [Validators.required]],
-        time: ['', [Validators.required]],
-        location: ['', [Validators.required]],
-        remarks: ''
-      }
-      // ,    {validator: this._checkifValidTime('time', 'date')    }
-    );
+    this._personService.findById(this._coachIdFromRoute).subscribe((coach) => (this._coach = coach));
   }
 
   ngAfterViewInit(): void {
     this._initService.initFormSelect();
+    this._initService.initDatepicker();
+    this._initService.initTimepicker();
   }
 
   fc(controlName: string): AbstractControl | null {
@@ -87,8 +77,15 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
     return this._sessionService.save(this._requestSessionForm.value);
   }
 
+
+  transferDataFromDatepickerToFormControl($event: Event): void {
+    this._requestSessionForm.controls.date.setValue(($event.target as HTMLInputElement).value);
+  }
+  transferDataFromTimepickerToFormControl($event: Event): void {
+    this._requestSessionForm.controls.time.setValue(($event.target as HTMLInputElement).value);
+  }
+
   get coachTopics(): CoachingTopic[]{
-    // return ['mock1', 'mock2', 'when backend is implemented', 'update get coachTopics()', 'it is ready :)' ];
     return this._coach.coachingTopics;
   }
 
@@ -123,4 +120,5 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
       }
     };
   }
+
 }

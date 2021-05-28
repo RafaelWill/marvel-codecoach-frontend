@@ -79,4 +79,6 @@ p {
 .icon-block .material-icons {
   font-size: inherit;
 }
-
+.datepicker-hack-strange-height > .datepicker-modal {
+  max-height: 395px;
+}

@@ -19,20 +19,10 @@
                   Topic is required.
                 </div>
               </div>
-<!--
-              <div class="input-field col s12">
-                <input id="topic" type="text" formControlName="topic" [ngClass]="{'is-invalid':fc('topic')?.errors
-                 && (fc('topic')?.dirty || fc('topic')?.touched) || hasSubmitFailed}"/>
-                <label for="topic">On which topic/subject would you like to have a coaching session?</label>
-                <div class="invalid-feedback mb-2" *ngIf="fc('topic')?.errors">
-                  Topic is required.
-                </div>
-              </div>-->
             </div>
             <div class="row">
-              <div class="input-field col s6">
-                <!--                type="text" class="datepicker"-->
-                <input id="date" type="date"  formControlName="date"
+              <div class="input-field col s6 datepicker-hack-strange-height">
+                <input id="date" type="text" class="datepicker" formControlName="date" (change)="transferDataFromDatepickerToFormControl($event)"
                        [ngClass]="{'is-invalid':fc('date')?.errors
                  && (fc('date')?.dirty || fc('date')?.touched) || hasSubmitFailed}">
                 <label for="date">Date</label>
@@ -41,7 +31,7 @@
                 </div>
               </div>
               <div class="input-field col s6">
-                <input id="timepicker" type="time" formControlName="time"
+                <input id="timepicker" type="text" class="timepicker" formControlName="time" (change)="transferDataFromTimepickerToFormControl($event)"
                        [ngClass]="{'is-invalid':fc('time')?.errors
                  && (fc('time')?.dirty || fc('time')?.touched) || hasSubmitFailed}">
                 <label for="timepicker">Time</label>
