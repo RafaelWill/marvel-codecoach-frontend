@@ -21,7 +21,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s6 datepicker-hack-strange-height">
+              <div class="input-field col s6 picker-hack-strange-height">
                 <input id="date" type="text" class="datepicker" formControlName="date" (change)="transferDataFromDatepickerToFormControl($event)"
                        [ngClass]="{'is-invalid':fc('date')?.errors
                  && (fc('date')?.dirty || fc('date')?.touched) || hasSubmitFailed}">
@@ -30,7 +30,7 @@
                   Valid date is required.
                 </div>
               </div>
-              <div class="input-field col s6">
+              <div class="input-field col s6 picker-hack-strange-height">
                 <input id="timepicker" type="text" class="timepicker" formControlName="time" (change)="transferDataFromTimepickerToFormControl($event)"
                        [ngClass]="{'is-invalid':fc('time')?.errors
                  && (fc('time')?.dirty || fc('time')?.touched) || hasSubmitFailed}">
