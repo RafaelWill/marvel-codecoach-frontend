@@ -50,14 +50,12 @@
                     </div>
                   </div>
                   <div class="input-field col s6">
-                    <select class="mb-3" style="display: block" id="grade" formControlName="grade" [ngClass]="{'is-invalid':fc('grade')?.errors
+                    <select id="grade" formControlName="grade" [ngClass]="{'is-invalid':fc('grade')?.errors
                                && (fc('grade')?.dirty || fc('grade')?.touched) || hasSubmitFailed}">
-                      <option value="" disabled selected>Choose your grade</option>
+                      <option value="" disabled selected>Choose your grade (required)</option>
                       <option *ngFor="let grade of [1,2,3,4,5,6]" [value]="grade"> {{grade}}</option>
                     </select>
-                    <div class="invalid-feedback mb-2" *ngIf="fc('grade')?.errors">
-                      Grade is required.
-                    </div>
+                    <label for="grade">Grade</label>
                   </div>
                 </div>
                 <div class="col s12 p-0"
@@ -78,17 +76,15 @@
                       </div>
                     </div>
                     <div formArrayName="extraGrades" class="input-field col s6">
-                      <select class="mb-2" style="display: block" [formControlName]="i"
+                      <select [formControlName]="i"
                               [ngClass]="{'is-invalid':fc('extraGrades.' + i)?.errors
                               && (fc('extraGrades.' + i)?.dirty
                                 || fc('extraGrades.' + i)?.touched)
                                 || hasSubmitFailed}">>
-                        <option value="" disabled selected>Choose your grade</option>
+                        <option value="" disabled selected>Choose your grade (required)</option>
                         <option *ngFor="let grade of [1,2,3,4,5,6]" [value]="grade"> {{grade}}</option>
                       </select>
-                      <div class="invalid-feedback mb-2" *ngIf="fc('extraGrades.' + i)?.errors">
-                        Grade is required.
-                      </div>
+                      <label [htmlFor]="i">Grade</label>
                     </div>
                   </div>
                 </div>
