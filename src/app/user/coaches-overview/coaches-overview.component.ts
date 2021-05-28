@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
 import {Person} from '../../shared/model/person';
 import {PersonService} from '../../shared/service/person.service';
-import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {CookieService} from 'ngx-cookie-service';
 
 @Component({
@@ -13,13 +11,20 @@ import {CookieService} from 'ngx-cookie-service';
 export class CoachesOverviewComponent implements OnInit {
   private _coaches: Array<Person> = [];
   isLoading = true;
+  hasCookie = false;
+  cookieValue = '';
 
-
-  constructor(private service: PersonService) {
+  constructor(private service: PersonService,
+              private cookieService: CookieService) {
   }
 
   ngOnInit(): void {
     this.getCoaches();
+    const cookieValue = this.cookieService.get('userid');
+    if (cookieValue !== '') {
+      this.hasCookie = true;
+      this.cookieValue = cookieValue;
+    }
   }
 
   private getCoaches(): void {

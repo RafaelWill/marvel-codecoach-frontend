@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {PersonService} from '../../shared/service/person.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Person} from '../../shared/model/person';
 import {CookieService} from 'ngx-cookie-service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-register-user',
@@ -60,7 +61,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   private setCookie(userid: string): void{
-    this._cookieService.set('userid', userid, this._date, '/', 'localhost');
+    this._cookieService.set('userid', userid, this._date, '/', environment.domain);
   }
 
   fc(controlName: string): AbstractControl | null {
