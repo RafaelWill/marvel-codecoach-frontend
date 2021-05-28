@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -12,13 +12,14 @@ import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {InitService} from '../../shared/materialize/init.service';
 
 @Component({
   selector: 'app-become-coach',
   templateUrl: './become-coach.component.html',
   styleUrls: ['./become-coach.component.css']
 })
-export class BecomeCoachComponent implements OnInit {
+export class BecomeCoachComponent implements OnInit, AfterViewInit {
 
   private _person!: Person;
   _becomeCoachForm!: FormGroup;
@@ -27,7 +28,8 @@ export class BecomeCoachComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,
               private personService: PersonService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private _initService: InitService) { }
 
   ngOnInit(): void {
     this.hasSubmitFailed = false;
@@ -44,6 +46,10 @@ export class BecomeCoachComponent implements OnInit {
       extraTopics: this._formBuilder.array([]),
       extraGrades: this._formBuilder.array([])
     });
+  }
+
+  ngAfterViewInit(): void {
+    this._initService.initFormSelect();
   }
 
   // TODO refactor of form needed to make this work properly
@@ -67,6 +73,7 @@ export class BecomeCoachComponent implements OnInit {
     this.extraTopics.at(this.extraTopics.length - 1).markAsUntouched({onlySelf: true});
     this.extraGrades.push(this._formBuilder.control('', [Validators.required]));
     this.extraGrades.at(this.extraGrades.length - 1).markAsUntouched({onlySelf: true});
+    this._initService.initFormSelect();
   }
 
   deleteSlot(): void {
