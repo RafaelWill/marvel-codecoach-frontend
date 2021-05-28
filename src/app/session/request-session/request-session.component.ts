@@ -29,7 +29,7 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
       location: ['', [Validators.required]],
       remarks: ''
     }
-    // ,    {validator: this._checkifValidTime('time', 'date')    }
+    , {validator: this._checkifValidTime('time', 'date')}
   );
 
   constructor(private _initService: InitService,
@@ -81,11 +81,12 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   transferDataFromDatepickerToFormControl($event: Event): void {
     this._requestSessionForm.controls.date.setValue(($event.target as HTMLInputElement).value);
   }
+
   transferDataFromTimepickerToFormControl($event: Event): void {
     this._requestSessionForm.controls.time.setValue(($event.target as HTMLInputElement).value);
   }
 
-  get coachTopics(): CoachingTopic[]{
+  get coachTopics(): CoachingTopic[] {
     return this._coach.coachingTopics;
   }
 
@@ -98,25 +99,20 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
     return (group) => {
       const timeInput = group.controls[formTimeText];
       const dateInput = group.controls[formDateText];
-      const datetimeInput = dateInput + ' ' + timeInput;
 
-      const currentDate = new Date().getDay() + '/' + new Date().getMonth() + '/' + new Date().getFullYear();
-      const currentTime = new Date().getHours() + ':' + new Date().getMinutes();
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
 
-      console.log(dateInput.value);
-      console.log(currentDate);
-      console.log(timeInput.value);
-      console.log(currentTime);
+      const currentDate = dd + '/' + mm + '/' + yyyy;
+      const currentTime = today.getHours() + ':' + today.getMinutes();
 
       // if (Date.parse(datetimeInput) < Date.now()) {
-      if ((dateInput.value === currentDate) &&
-        (Date.parse(timeInput.value) < Date.parse(currentTime))
-      ) {
+      if ((dateInput.value === currentDate) && (timeInput.value < currentTime)) {
         timeInput.setErrors({earlierThanNow: true});
-        console.log('bingo');
       } else {
         timeInput.setErrors(null);
-        console.log('all ok');
       }
     };
   }

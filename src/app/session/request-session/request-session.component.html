@@ -31,9 +31,9 @@
                        [ngClass]="{'is-invalid':fc('time')?.errors
                  && (fc('time')?.dirty || fc('time')?.touched) || hasSubmitFailed}">
                 <label for="timepicker">Time</label>
-                <div class="invalid-feedback mb-2" *ngIf="fc('date')?.errors">
-                  <!--*ngIf="requestSessionForm.hasError('earlierThanNow','time')
-                 && (fc('time')?.dirty || fc('time')?.touched)">-->
+                <div class="invalid-feedback mb-2"
+                  *ngIf="requestSessionForm.hasError('earlierThanNow','time')
+                 && (fc('time')?.dirty || fc('time')?.touched)">
                   Valid time is required (can not be earlier than now).
                 </div>
               </div>
