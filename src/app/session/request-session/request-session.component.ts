@@ -111,7 +111,6 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
       const currentDate = dd + '/' + mm + '/' + yyyy;
       const currentTime = today.getHours() + ':' + today.getMinutes();
 
-      // if (Date.parse(datetimeInput) < Date.now()) {
       if ((dateInput.value === currentDate) && (timeInput.value < currentTime)) {
         timeInput.setErrors({earlierThanNow: true});
       } else {

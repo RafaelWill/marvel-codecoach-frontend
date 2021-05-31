@@ -17,6 +17,8 @@ import { JoinPipe } from './shared/pipe/join.pipe';
 import { JointopicPipe } from './shared/pipe/jointopic.pipe';
 import { LoadingSpinnerComponent } from './shared/util/loading-spinner/loading-spinner.component';
 import {CookieService} from 'ngx-cookie-service';
+import { Error401Component } from './error/error401/error401.component';
+import { LoginComponent } from './user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import {CookieService} from 'ngx-cookie-service';
     RequestSessionComponent,
     JointopicPipe,
     JoinPipe,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    Error401Component,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
