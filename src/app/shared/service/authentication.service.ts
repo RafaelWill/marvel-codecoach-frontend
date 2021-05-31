@@ -9,11 +9,23 @@ export class AuthenticationService {
   constructor() { }
 
   login(loginData: FormData): Observable<any> {
-    throw new Error('not implemented');
+    alert('not implemented');
     return new Observable<any>();
   }
 
   logout(): void {
-    throw new Error('not implemented');
+    alert('not implemented');
+  }
+
+  isLoggedIn(): boolean {
+    return false;
+  }
+
+  getUserId(): string {
+    return 'not implemented';
+  }
+
+  getUsername(): string {
+    return 'not implemented';
   }
 }
