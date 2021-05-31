@@ -23,12 +23,6 @@ export class PersonService {
   findById(id: string): Observable<Person> {
     return this._http.get<Person>(`${this._url}/${id}`);
   }
-/* delete if story 13 successful
-  findCoachingTopicsById(id: string): Observable<string[]>{
-    return this.findById(id).pipe(
-      map( (coach: Person) => coach.coachingTopics )
-    );
-  }*/
 
   getAllCoaches(): Observable<Array<Person>>{
     return this._http.get<Array<Person>>(`${this._url}/coaches`);

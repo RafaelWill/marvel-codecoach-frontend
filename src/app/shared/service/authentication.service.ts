@@ -1,31 +1,59 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {environment} from '../../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor() { }
+  private readonly _url: string;
+  private readonly _tokenKey = 'jwtToken';
+  private _jwtHelper = new JwtHelperService();
+  // TODO: userLoggedIn$
 
-  login(loginData: FormData): Observable<any> {
-    alert('not implemented');
-    return new Observable<any>();
+  constructor(private _http: HttpClient) {
+    this._url = `${environment.backendUrl}/authenticate`;
   }
 
-  logout(): void {
-    alert('not implemented');
+  login(loginData: FormData): Observable<any> {
+    return this._http.post<any>(this._url, loginData)
+      .pipe(
+        map(response => {
+          const token = (response as any).Token;
+          sessionStorage.setItem(this._tokenKey, token);
+        })
+      );
   }
 
   isLoggedIn(): boolean {
-    return false;
+    return sessionStorage.getItem(this._tokenKey) !== null;
   }
 
-  getUserId(): string {
-    return 'not implemented';
+  getCurrentTokenValue(): string | null {
+    return sessionStorage.getItem(this._tokenKey);
+  }
+
+  getUserId(): string | null {
+    if (this.getCurrentTokenValue() === null) {
+      return null;
+    }
+    // @ts-ignore
+    return this._jwtHelper.decodeToken(this.getCurrentTokenValue()).userId;
+  }
+
+  logout(): void {
+    sessionStorage.removeItem(this._tokenKey);
   }
 
   getUsername(): string {
     return 'not implemented';
   }
+
+
+
 }
+

@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
               private initService: InitService
   ) {
     this.loginForm = this.formBuilder.group({
-      username: '',
+      email: '',
       password: ''
     });
   }
