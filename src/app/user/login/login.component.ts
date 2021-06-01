@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.success = false;
     this.authenticationService.login(loginData)
       .subscribe(
-        ( () => {
+        ( res => {
           this.success = true;
           this.initService.initDropdowns();
           this.router.navigateByUrl('/home');
