@@ -39,14 +39,6 @@ export class AuthenticationService {
         tap( _ => console.log('are yuou here?' + this.localStorage.get(this._tokenKey)))
       );
   }
-/*
-
-        map((response => {
-          const token = (response as any).Token;
-          this.setJwtToken(token);
-        })),
-
- */
 
   getCurrentToken(): string | null {
     return this.localStorage.get(this._tokenKey);
@@ -60,7 +52,7 @@ export class AuthenticationService {
     if (this.getCurrentToken() === null) {
       return null;
     }
-    // @ts-ignore
+
     return this.decodedToken().userId;
   }
 
@@ -70,20 +62,24 @@ export class AuthenticationService {
   }
 
   getFullName(): string {
+    return 'currently fixing it';
+    /*
     if (!this.isLoggedIn()) {
       return 'not logged in';
     }
 
-    let person: Person;
-    // @ts-ignore
-    this.personService.findById(this.getUserId()).subscribe(user => person = user);
-    // @ts-ignore
-    return `${person.firstName} ${person.lastName}`;
+    let firstName: string;
+    let lastName: string;
+    this.personService.findById(this.getUserId()).pipe(
+      tap(user => firstName = user.firstName),
+      tap(user => lastName = user.lastName)
+    );
+    return `${firstName} ${lastName}`;*/
   }
 
   private decodedToken(): { [key: string]: string } {
     // @ts-ignore
-    return this.getCurrentToken ? this._jwtHelper.decodeToken(this.getCurrentToken()) : null;
+    return this._jwtHelper.decodeToken(this.getCurrentToken());
   }
 
 }
