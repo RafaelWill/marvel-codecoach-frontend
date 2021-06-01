@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import {LayoutModule} from './layout/layout.module';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { Error404Component } from './error/error404/error404.component';
@@ -19,6 +19,7 @@ import { LoadingSpinnerComponent } from './shared/util/loading-spinner/loading-s
 import {CookieService} from 'ngx-cookie-service';
 import { Error401Component } from './error/error401/error401.component';
 import { LoginComponent } from './user/login/login.component';
+import {AuthenticationInterceptor} from './shared/util/authentication.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LoginComponent } from './user/login/login.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [CookieService],
+  providers: [CookieService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

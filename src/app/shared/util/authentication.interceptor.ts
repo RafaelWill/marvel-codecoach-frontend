@@ -29,38 +29,38 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         }
       });
     }
+
+
+    return next.handle(authRequest).pipe(
     // @ts-ignore
-    return next.handle(authRequest).pipe(tap((response: HttpResponse<any>) => {
-      if (response.headers && response.headers.get('Authorization')) {
-        // @ts-ignore
-        this.authenticationService.setJwtToken(response.headers.get('Authorization').replace('Bearer', '').trim());
+      tap((response: HttpResponse<any>) => {
+      const authorization = response.headers?.get('Authorization');
+      if (authorization) {
+        this.authenticationService.setJwtToken(authorization.replace('Bearer', '').trim());
       }
     }));
   }
 
 
-
-
-/* tim
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.authenticationService.isLoggedIn()) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${this.authenticationService.getCurrentToken()}`
+  /* tim
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+      if (this.authenticationService.isLoggedIn()) {
+        req = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${this.authenticationService.getCurrentToken()}`
+          }
+        });
+      }
+      // @ts-ignore
+      return next.handle(req).pipe(tap((response: HttpResponse<any>) => {
+        if (response.headers && response.headers.get('Authorization')) {
+          // @ts-ignore
+          this.authenticationService.setJwtToken(response.headers.get('Authorization').replace('Bearer', '').trim());
         }
-      });
+      }));
     }
-    // @ts-ignore
-    return next.handle(req).pipe(tap((response: HttpResponse<any>) => {
-      if (response.headers && response.headers.get('Authorization')) {
-        // @ts-ignore
-        this.authenticationService.setJwtToken(response.headers.get('Authorization').replace('Bearer', '').trim());
-      }
-    }));
-  }
 
-*/
-
+  */
 
 
 }
