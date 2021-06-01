@@ -19,7 +19,7 @@ export class AuthenticationService {
   private readonly _tokenKey = 'jwtToken';
   private readonly _fullnameKey = 'fullname';
   private _jwtHelper = new JwtHelperService();
-  private currentPerson!: Person; // TODO put in LocaleStorage
+  private currentPerson!: Person;
 
   private _isUserLoggedIn = new Subject<boolean>();
   isUserLoggedIn$ = this._isUserLoggedIn.asObservable();
@@ -69,7 +69,7 @@ export class AuthenticationService {
     if (!this.getUserId()) {
       return 'Username unknown';
     }
-    return this.localStorage.get(this._fullnameKey)!;
+    return this.localStorage.get(this._fullnameKey)!; // TODO return observable and use it in header
   }
 
   private decodedToken(): { [key: string]: string } {
