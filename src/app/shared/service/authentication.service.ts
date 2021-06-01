@@ -1,9 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
+import {LocalStorageService} from './local-storage.service';
+import {PersonService} from './person.service';
+import {Person} from '../model/person';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +17,13 @@ export class AuthenticationService {
   private readonly _url: string;
   private readonly _tokenKey = 'jwtToken';
   private _jwtHelper = new JwtHelperService();
-  // TODO: userLoggedIn$
 
-  constructor(private _http: HttpClient) {
+  private _isUserLoggedIn = new Subject<boolean>();
+  isUserLoggedIn$ = this._isUserLoggedIn.asObservable();
+
+  constructor(private _http: HttpClient,
+              private localStorage: LocalStorageService,
+              private personService: PersonService) {
     this._url = `${environment.backendUrl}/authenticate`;
   }
 
@@ -24,17 +32,18 @@ export class AuthenticationService {
       .pipe(
         map(response => {
           const token = (response as any).Token;
-          sessionStorage.setItem(this._tokenKey, token);
-        })
+          this.localStorage.set(this._tokenKey, token);
+        }),
+        tap( () => this._isUserLoggedIn.next(true))
       );
   }
 
   isLoggedIn(): boolean {
-    return sessionStorage.getItem(this._tokenKey) !== null;
+    return this.localStorage.get(this._tokenKey) !== null;
   }
 
   getCurrentTokenValue(): string | null {
-    return sessionStorage.getItem(this._tokenKey);
+    return this.localStorage.get(this._tokenKey);
   }
 
   getUserId(): string | null {
@@ -46,14 +55,22 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    sessionStorage.removeItem(this._tokenKey);
+    this.localStorage.remove(this._tokenKey);
+    this._isUserLoggedIn.next(false);
   }
 
-  getUsername(): string {
-    return 'not implemented';
+  getFullName(): string {
+    let person: Person;
+
+    if (this.getUserId() !== null){
+    // @ts-ignore
+    this.personService.findById(this.getUserId()).subscribe( user => person = user);
+    // @ts-ignore
+    return `${person.firstName} ${person.lastName}`;
+    }
+
+    return 'not logged in';
   }
-
-
 
 }
 
