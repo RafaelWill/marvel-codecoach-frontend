@@ -13,4 +13,7 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout(): void {
+    this.authenticationService.logout();
+  }
 }

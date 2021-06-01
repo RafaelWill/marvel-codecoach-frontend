@@ -35,8 +35,7 @@ export class AuthenticationService {
   login(loginData: FormData): Observable<any> {
     return this._http.post<any>(this._url, loginData)
       .pipe(
-        tap(_ => this._isUserLoggedIn.next(true)),
-        tap( _ => console.log('are yuou here?' + this.localStorage.get(this._tokenKey)))
+        tap(_ => this._isUserLoggedIn.next(true))
       );
   }
 
