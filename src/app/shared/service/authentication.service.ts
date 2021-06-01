@@ -3,10 +3,11 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {LocalStorageService} from './local-storage.service';
 import {PersonService} from './person.service';
 import {Person} from '../model/person';
+import {flatMap} from 'rxjs/internal/operators';
 
 
 @Injectable({
@@ -16,7 +17,9 @@ export class AuthenticationService {
 
   private readonly _url: string;
   private readonly _tokenKey = 'jwtToken';
+  private readonly _fullnameKey = 'fullname';
   private _jwtHelper = new JwtHelperService();
+  private currentPerson!: Person; // TODO put in LocaleStorage
 
   private _isUserLoggedIn = new Subject<boolean>();
   isUserLoggedIn$ = this._isUserLoggedIn.asObservable();
@@ -35,6 +38,9 @@ export class AuthenticationService {
   login(loginData: FormData): Observable<any> {
     return this._http.post<any>(this._url, loginData)
       .pipe(
+        flatMap(_ => this.personService.findById(this.getUserId()!)),
+        tap(person => this.currentPerson = person),
+        tap(person => this.localStorage.set(this._fullnameKey, `${person.firstName} ${person.lastName}`)),
         tap(_ => this._isUserLoggedIn.next(true))
       );
   }
@@ -51,7 +57,6 @@ export class AuthenticationService {
     if (this.getCurrentToken() === null) {
       return null;
     }
-
     return this.decodedToken().userId;
   }
 
@@ -61,24 +66,14 @@ export class AuthenticationService {
   }
 
   getFullName(): string {
-    return 'currently fixing it';
-    /*
-    if (!this.isLoggedIn()) {
-      return 'not logged in';
+    if (!this.getUserId()) {
+      return 'Username unknown';
     }
-
-    let firstName: string;
-    let lastName: string;
-    this.personService.findById(this.getUserId()).pipe(
-      tap(user => firstName = user.firstName),
-      tap(user => lastName = user.lastName)
-    );
-    return `${firstName} ${lastName}`;*/
+    return this.localStorage.get(this._fullnameKey)!;
   }
 
   private decodedToken(): { [key: string]: string } {
-    // @ts-ignore
-    return this._jwtHelper.decodeToken(this.getCurrentToken());
+    return this._jwtHelper.decodeToken(this.getCurrentToken()!);
   }
 
 }
