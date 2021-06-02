@@ -46,6 +46,7 @@ export class AuthenticationService {
       );
   }
 
+
   getCurrentToken(): string | null {
     return this.localStorage.get(this._tokenKey);
   }
