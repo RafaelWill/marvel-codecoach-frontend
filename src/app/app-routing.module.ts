@@ -10,6 +10,7 @@ import { CoachesOverviewComponent } from './user/coaches-overview/coaches-overvi
 import {Error401Component} from './error/error401/error401.component';
 import {LoginComponent} from './user/login/login.component';
 import {AuthorizeGuard} from './shared/util/authorize-guard';
+import {Error403Component} from './error/error403/error403.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'users/:id/become-coach', component: BecomeCoachComponent, canActivate: [AuthorizeGuard]},
   {path: 'sessions/:coachId/request-session', component: RequestSessionComponent, canActivate: [AuthorizeGuard]},
   {path: 'unauthorized', component: Error401Component},
+  {path: 'forbidden', component: Error403Component},
   {path: 'not-found', component: Error404Component},
   {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
   ];
