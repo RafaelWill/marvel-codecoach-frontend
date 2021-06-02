@@ -21,6 +21,8 @@ import { Error401Component } from './error/error401/error401.component';
 import { LoginComponent } from './user/login/login.component';
 import {AuthenticationInterceptor} from './shared/util/authentication.interceptor';
 import { CoachProfileComponent } from './user/coach-profile/coach-profile.component';
+import { Error403Component } from './error/error403/error403.component';
+import {ErrorInterceptor} from './shared/util/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { CoachProfileComponent } from './user/coach-profile/coach-profile.compon
     JoinPipe,
     LoadingSpinnerComponent,
     Error401Component,
+    LoginComponent,
+    Error403Component,
     LoginComponent,
     CoachProfileComponent
   ],

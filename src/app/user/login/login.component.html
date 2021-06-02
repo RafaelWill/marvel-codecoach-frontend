@@ -30,8 +30,8 @@
 
             </div>
             <p class="red-text" *ngIf="error">Something went wrong</p>
-            <p class="red-text" *ngIf="wrongUsernameOrPassword">Login failed</p>
-            <p class="red-text" *ngIf="userUnknown">Email unknown</p>
+            <p class="red-text" *ngIf="emailNotExist">Login failed: Email unknown</p>
+            <p class="red-text" *ngIf="correctEmailButWrongPassword">Login failed: Password doesn't match email</p>
             <div class="row float-right">
               <div *ngIf="sending"
                    class="waves-effect waves-light yellow darken-2 btn-large black-text margin-button disabled">

@@ -11,18 +11,20 @@ import {Error401Component} from './error/error401/error401.component';
 import {LoginComponent} from './user/login/login.component';
 import {CoachProfileComponent} from './user/coach-profile/coach-profile.component';
 
+import {AuthorizeGuard} from './shared/util/authorize-guard';
+import {Error403Component} from './error/error403/error403.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'users/register', component: RegisterUserComponent},
-  {path: 'users/coaches', component: CoachesOverviewComponent},
-  {path: 'users/:id', component: UserProfileComponent },
-  {path: 'users/:id/become-coach', component: BecomeCoachComponent},
-  {path: 'sessions/:coachId/request-session', component: RequestSessionComponent},
-  {path: 'coach-profile/:coachId', component: CoachProfileComponent},
+  {path: 'users/coaches', component: CoachesOverviewComponent, canActivate: [AuthorizeGuard]},
+  {path: 'users/:id', component: UserProfileComponent, canActivate: [AuthorizeGuard]},
+  {path: 'users/:id/become-coach', component: BecomeCoachComponent, canActivate: [AuthorizeGuard]},
+  {path: 'sessions/:coachId/request-session', component: RequestSessionComponent, canActivate: [AuthorizeGuard]},
   {path: 'unauthorized', component: Error401Component},
+  {path: 'forbidden', component: Error403Component},
   {path: 'not-found', component: Error404Component},
   {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
   ];

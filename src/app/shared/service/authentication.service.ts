@@ -3,11 +3,12 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {map, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {LocalStorageService} from './local-storage.service';
 import {PersonService} from './person.service';
 import {Person} from '../model/person';
 import {flatMap} from 'rxjs/internal/operators';
+import {Router} from '@angular/router';
 
 
 @Injectable({
@@ -21,13 +22,15 @@ export class AuthenticationService {
   private readonly _userId = 'userId';
   private _jwtHelper = new JwtHelperService();
   private currentPerson!: Person;
+  private tokenExpirationTimer: any;
 
   private _isUserLoggedIn = new Subject<boolean>();
   isUserLoggedIn$ = this._isUserLoggedIn.asObservable();
 
   constructor(private _http: HttpClient,
               private localStorage: LocalStorageService,
-              private personService: PersonService) {
+              private personService: PersonService,
+              private router: Router ) {
     this._url = `${environment.backendUrl}/authenticate`;
   }
 
@@ -45,6 +48,7 @@ export class AuthenticationService {
         tap(_ => this._isUserLoggedIn.next(true))
       );
   }
+
 
   getCurrentToken(): string | null {
     return this.localStorage.get(this._tokenKey);
@@ -65,7 +69,20 @@ export class AuthenticationService {
     this.localStorage.remove(this._tokenKey);
     this.localStorage.remove(this._fullnameKey);
     this.localStorage.remove(this._userId);
+
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+
     this._isUserLoggedIn.next(false);
+    this.router.navigate([`home`]);
+  }
+
+  autoLogout(expirationDuration: number): void {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   getFullName(): string {
@@ -79,6 +96,10 @@ export class AuthenticationService {
     return this._jwtHelper.decodeToken(this.getCurrentToken()!);
   }
 
+  getExpirationDate(): number {
+   const expirationDate = +this.decodedToken().exp;
+   return new Date(expirationDate * 1000).getTime() - new Date().getTime();
+  }
 }
 
 /*
