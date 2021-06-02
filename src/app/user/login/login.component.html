@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="row">
+    <div class="col s12 m12">
+      <h1 class="center teal-text lighten-3">{{title}}</h1>
+      <div class="content-container-with-padding z-depth-4">
+        <div class="row">
+          <form class="col s12" [formGroup]="loginForm" (ngSubmit)="submit(loginForm.value)">
+            <div class="row">
+              <div class="input-field col s12">
+
+                <input id="email" type="text" class="validate" formControlName="email"
+                       [ngClass]="{'is-invalid':fc('email')?.errors
+                       && (fc('email')?.dirty || fc('email')?.touched)}">
+                <label for="email">Email</label>
+                <div class="invalid-feedback" *ngIf="fc('email')?.errors">
+                  Valid email is required.
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="password" type="password" class="validate" formControlName="password"
+                       [ngClass]="{'is-invalid':fc('password')?.errors
+                    && (fc('password')?.dirty || fc('password')?.touched)}">
+                <label for="password">Password</label>
+                <div class="invalid-feedback" *ngIf="fc('password')?.errors">
+                  Valid password is required: at least 8 characters (1 uppercase letter, 1 lowercase letter, 1 number).
+                </div>
+              </div>
+
+            </div>
+            <p class="red-text" *ngIf="error">Something went wrong</p>
+            <p class="red-text" *ngIf="wrongUsernameOrPassword">Login failed</p>
+            <p class="red-text" *ngIf="userUnknown">Email unknown</p>
+            <div class="row float-right">
+              <div *ngIf="sending"
+                   class="waves-effect waves-light yellow darken-2 btn-large black-text margin-button disabled">
+                <div class="row">
+                  <div class="col">Signing in</div>
+                  <div class="col" style="padding-top: 10px;">
+                    <div class="preloader-wrapper small active right-align">
+                      <div class="spinner-layer spinner-green-only">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                          <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type=submit *ngIf="!sending"
+                      class="waves-effect waves-light yellow darken-2 btn-large black-text margin-button">Sign in<i
+                class="material-icons right">send</i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

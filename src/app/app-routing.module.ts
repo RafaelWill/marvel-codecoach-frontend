@@ -7,15 +7,19 @@ import {BecomeCoachComponent} from './user/become-coach/become-coach.component';
 import {UserProfileComponent} from './user/user-profile/user-profile.component';
 import {RequestSessionComponent} from './session/request-session/request-session.component';
 import { CoachesOverviewComponent } from './user/coaches-overview/coaches-overview.component';
+import {Error401Component} from './error/error401/error401.component';
+import {LoginComponent} from './user/login/login.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
   {path: 'users/register', component: RegisterUserComponent},
   {path: 'users/coaches', component: CoachesOverviewComponent},
   {path: 'users/:id', component: UserProfileComponent },
   {path: 'users/:id/become-coach', component: BecomeCoachComponent},
   {path: 'sessions/:coachId/request-session', component: RequestSessionComponent},
+  {path: 'unauthorized', component: Error401Component},
   {path: 'not-found', component: Error404Component},
   {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
   ];

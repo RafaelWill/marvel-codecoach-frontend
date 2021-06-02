@@ -48,8 +48,6 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
     this.hasSubmitFailed = false;
     const routeParams = this._activatedRoute.snapshot.paramMap;
     this._coachIdFromRoute = String(routeParams.get('coachId'));
-    // tslint:disable-next-line:max-line-length
-    // TODO: why not editing tslint.json instead of ignoring it here??
     this._personService.findById(this._coachIdFromRoute).subscribe((coach) => (this._coach = coach));
   }
 
@@ -111,7 +109,6 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
       const currentDate = dd + '/' + mm + '/' + yyyy;
       const currentTime = today.getHours() + ':' + today.getMinutes();
 
-      // if (Date.parse(datetimeInput) < Date.now()) {
       if ((dateInput.value === currentDate) && (timeInput.value < currentTime)) {
         timeInput.setErrors({earlierThanNow: true});
       } else {

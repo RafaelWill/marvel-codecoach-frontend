@@ -44,7 +44,6 @@
                     && (ucfc('password')?.dirty || ucfc('password')?.touched)}"
                        (ngModelChange)="updateConfirmPattern()"
                 >
-<!--                       question: is the above line a security risk ?-->
                 <label for="password">Password</label>
                 <div class="invalid-feedback" *ngIf="ucfc('password')?.errors">
                   Valid password is required: at least 8 characters (1 uppercase letter, 1 lowercase letter, 1 number).
