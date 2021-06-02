@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {InitService} from '../shared/materialize/init.service';
-import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-home',
@@ -8,16 +7,10 @@ import {CookieService} from 'ngx-cookie-service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  hasCookie = false;
-  cookieValue = '';
-  constructor(private _initService: InitService, private cookieService: CookieService) { }
+
+  constructor(private _initService: InitService) { }
 
   ngOnInit(): void {
-    const cookieValue = this.cookieService.get('userid');
-    if (cookieValue !== '') {
-      this.hasCookie = true;
-      this.cookieValue = cookieValue;
-    }
   }
 
   ngAfterViewInit(): void {

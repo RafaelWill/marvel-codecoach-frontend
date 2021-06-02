@@ -4,8 +4,8 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Person} from '../../shared/model/person';
-import {CookieService} from 'ngx-cookie-service';
-import {environment} from '../../../environments/environment';
+import {AuthenticationService} from '../../shared/service/authentication.service';
+import {LocalStorageService} from '../../shared/service/local-storage.service';
 
 @Component({
   selector: 'app-register-user',
@@ -30,11 +30,14 @@ export class RegisterUserComponent implements OnInit {
       {validator: this.checkIfMatchingPasswords('password', 'confirmedPassword')})
   });
   private _date: Date | undefined;
+  loginData: FormGroup | undefined;
+  userId!: string | null;
 
   constructor(private _personService: PersonService,
               private _formBuilder: FormBuilder,
               private _router: Router,
-              private _cookieService: CookieService) {
+              private authenticationService: AuthenticationService,
+              private _localStorage: LocalStorageService) {
   }
 
   ngOnInit(): void {
@@ -52,16 +55,18 @@ export class RegisterUserComponent implements OnInit {
     if (this._registrationForm.valid) {
       this.addPerson()
         .subscribe((personRegistered) => {
+            this.loginData = this._formBuilder.group({
+              email: this._registrationForm.get('userCredential')?.get('email')?.value,
+              password: this._registrationForm.get('userCredential')?.get('password')?.value
+            });
             this._registrationForm.reset();
-            this.setCookie(personRegistered.id);
-            this._router.navigate(['users/' + personRegistered.id]);
+            this.authenticationService.login(this.loginData.value).subscribe( () => {
+              this.userId = this.authenticationService.getUserId();
+              this._router.navigate([`users/${this._localStorage.get('userId')}`]);
+            });
           }
         );
     }
-  }
-
-  private setCookie(userid: string): void{
-    this._cookieService.set('userid', userid, this._date, '/', environment.domain);
   }
 
   fc(controlName: string): AbstractControl | null {

@@ -18,6 +18,7 @@ export class AuthenticationService {
   private readonly _url: string;
   private readonly _tokenKey = 'jwtToken';
   private readonly _fullnameKey = 'fullname';
+  private readonly _userId = 'userId';
   private _jwtHelper = new JwtHelperService();
   private currentPerson!: Person;
 
@@ -39,6 +40,7 @@ export class AuthenticationService {
       .pipe(
         flatMap(_ => this.personService.findById(this.getUserId()!)),
         tap(person => this.currentPerson = person),
+        tap(person => this.localStorage.set(this._userId, `${person.id}`)),
         tap(person => this.localStorage.set(this._fullnameKey, `${person.firstName} ${person.lastName}`)),
         tap(_ => this._isUserLoggedIn.next(true))
       );
@@ -62,6 +64,7 @@ export class AuthenticationService {
   logout(): void {
     this.localStorage.remove(this._tokenKey);
     this.localStorage.remove(this._fullnameKey);
+    this.localStorage.remove(this._userId);
     this._isUserLoggedIn.next(false);
   }
 
