@@ -21,6 +21,7 @@ import { Error401Component } from './error/error401/error401.component';
 import { LoginComponent } from './user/login/login.component';
 import {AuthenticationInterceptor} from './shared/util/authentication.interceptor';
 import { Error403Component } from './error/error403/error403.component';
+import {ErrorInterceptor} from './shared/util/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -48,8 +49,12 @@ import { Error403Component } from './error/error403/error403.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [CookieService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true}],
+  providers:
+    [
+      CookieService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
