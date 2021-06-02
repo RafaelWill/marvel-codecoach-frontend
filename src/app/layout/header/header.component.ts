@@ -3,6 +3,7 @@ import {AuthenticationService} from '../../shared/service/authentication.service
 import {InitService} from '../../shared/materialize/init.service';
 import {filter} from 'rxjs/operators';
 import {PersonService} from '../../shared/service/person.service';
+import {LocalStorageService} from '../../shared/service/local-storage.service';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   userId!: string | null;
 
   constructor(public authenticationService: AuthenticationService,
+              private localStorage: LocalStorageService,
               private personService: PersonService,
               private initService: InitService) {
   }
@@ -26,7 +28,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
     this.authenticationService.isUserLoggedIn$
       .pipe(filter(isLoggedIn => isLoggedIn === true))
-      .subscribe(_ => this.fullName = this.authenticationService.getFullName() );
+      .subscribe(_ => { this.fullName = this.authenticationService.getFullName();
+                        this.userId = this.authenticationService.getUserId();
+                        });
   }
 
   ngAfterViewInit(): void {
