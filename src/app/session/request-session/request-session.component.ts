@@ -6,8 +6,8 @@ import {SessionService} from '../../shared/service/session.service';
 import {PersonService} from '../../shared/service/person.service';
 import {Person} from '../../shared/model/person';
 import {InitService} from '../../shared/materialize/init.service';
-import {CookieService} from 'ngx-cookie-service';
 import {CoachingTopic} from '../../shared/model/coaching-topic';
+import {AuthenticationService} from '../../shared/service/authentication.service';
 
 @Component({
   selector: 'app-request-session',
@@ -20,7 +20,7 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   hasSubmitFailed!: boolean;
   private _coach!: Person;
   private _coachIdFromRoute!: string;
-  private userId = '';
+  private userId!: string | null;
 
   private readonly _requestSessionForm = this._formBuilder.group({
       topic: ['', [Validators.required]],
@@ -38,13 +38,13 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
               private _router: Router,
               private _sessionService: SessionService,
               private _personService: PersonService,
-              private _cookieService: CookieService) {
+              private _authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
     // TODO: much better to use sessionStorage or localStorage for
     // this in combination with an angular service (like for example login-service)
-    this.userId = this._cookieService.get('userid');
+    this.userId = this._authenticationService.getUserId();
     this.hasSubmitFailed = false;
     const routeParams = this._activatedRoute.snapshot.paramMap;
     this._coachIdFromRoute = String(routeParams.get('coachId'));

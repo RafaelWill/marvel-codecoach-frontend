@@ -13,6 +13,7 @@ import {Person} from '../../shared/model/person';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {InitService} from '../../shared/materialize/init.service';
+import {AuthenticationService} from '../../shared/service/authentication.service';
 
 @Component({
   selector: 'app-become-coach',
@@ -24,15 +25,18 @@ export class BecomeCoachComponent implements OnInit, AfterViewInit {
   private _person!: Person;
   _becomeCoachForm!: FormGroup;
   hasSubmitFailed!: boolean;
+  userId!: string | null;
 
   constructor(private _formBuilder: FormBuilder,
               private personService: PersonService,
               private route: ActivatedRoute,
               private router: Router,
-              private _initService: InitService) { }
+              private _initService: InitService,
+              private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.hasSubmitFailed = false;
+    this.userId = this.authenticationService.getUserId();
     const routeParams = this.route.snapshot.paramMap;
     const personIdFromRoute = String(routeParams.get('id'));
     this.personService
@@ -86,7 +90,8 @@ export class BecomeCoachComponent implements OnInit, AfterViewInit {
       this.becomeACoach().subscribe(
         () =>  {
           this._becomeCoachForm.reset();
-          this.router.navigate(['users/' + this.person.id ]); });
+
+          this.router.navigate([`users/${this.userId}`]); });
     } else {
       this.hasSubmitFailed = true;
     }

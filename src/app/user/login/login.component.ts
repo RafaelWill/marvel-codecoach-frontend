@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   userUnknown!: boolean;
   loginForm;
   title = 'Sign in';
+  userId?: string | null;
 
   private redirectUrl!: string;
   private fragment!: string;
@@ -53,7 +54,8 @@ export class LoginComponent implements OnInit {
         ( res => {
           this.success = true;
           this.initService.initDropdowns();
-          this.router.navigateByUrl('/home');
+          this.userId = this.authenticationService.getUserId();
+          this.router.navigateByUrl( `users/${this.userId}`);
         }),
         (fault => {
           console.log('login failed');

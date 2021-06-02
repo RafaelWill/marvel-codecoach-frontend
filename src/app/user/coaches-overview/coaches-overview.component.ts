@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Person} from '../../shared/model/person';
 import {PersonService} from '../../shared/service/person.service';
-import {CookieService} from 'ngx-cookie-service';
+import {AuthenticationService} from '../../shared/service/authentication.service';
 
 @Component({
   selector: 'app-coaches-overview',
@@ -13,18 +13,15 @@ export class CoachesOverviewComponent implements OnInit {
   isLoading = true;
   hasCookie = false;
   cookieValue = '';
+  userId!: string | null;
 
   constructor(private service: PersonService,
-              private cookieService: CookieService) {
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
     this.getCoaches();
-    const cookieValue = this.cookieService.get('userid');
-    if (cookieValue !== '') {
-      this.hasCookie = true;
-      this.cookieValue = cookieValue;
-    }
+    this.userId = this.authenticationService.getUserId();
   }
 
   private getCoaches(): void {
