@@ -9,6 +9,8 @@ import {RequestSessionComponent} from './session/request-session/request-session
 import { CoachesOverviewComponent } from './user/coaches-overview/coaches-overview.component';
 import {Error401Component} from './error/error401/error401.component';
 import {LoginComponent} from './user/login/login.component';
+import {CoachProfileComponent} from './user/coach-profile/coach-profile.component';
+
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -19,6 +21,7 @@ const routes: Routes = [
   {path: 'users/:id', component: UserProfileComponent },
   {path: 'users/:id/become-coach', component: BecomeCoachComponent},
   {path: 'sessions/:coachId/request-session', component: RequestSessionComponent},
+  {path: 'coach-profile/:coachId', component: CoachProfileComponent},
   {path: 'unauthorized', component: Error401Component},
   {path: 'not-found', component: Error404Component},
   {path: '**', redirectTo: 'not-found', pathMatch: 'full'}

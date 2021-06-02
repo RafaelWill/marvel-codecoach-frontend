@@ -20,6 +20,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { Error401Component } from './error/error401/error401.component';
 import { LoginComponent } from './user/login/login.component';
 import {AuthenticationInterceptor} from './shared/util/authentication.interceptor';
+import { CoachProfileComponent } from './user/coach-profile/coach-profile.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {AuthenticationInterceptor} from './shared/util/authentication.intercepto
     JoinPipe,
     LoadingSpinnerComponent,
     Error401Component,
-    LoginComponent
+    LoginComponent,
+    CoachProfileComponent
   ],
   imports: [
     BrowserModule,
