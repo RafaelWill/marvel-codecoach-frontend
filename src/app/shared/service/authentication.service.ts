@@ -30,7 +30,6 @@ export class AuthenticationService {
     this._url = `${environment.backendUrl}/authenticate`;
   }
 
-
   setJwtToken(token: string): void {
     this.localStorage.set(this._tokenKey, token);
   }
@@ -62,6 +61,7 @@ export class AuthenticationService {
 
   logout(): void {
     this.localStorage.remove(this._tokenKey);
+    this.localStorage.remove(this._fullnameKey);
     this._isUserLoggedIn.next(false);
   }
 

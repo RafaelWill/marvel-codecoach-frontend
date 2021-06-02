@@ -8,15 +8,24 @@
             <div class="row">
               <div class="input-field col s12">
 
-                <input id="username" type="text" class="validate" formControlName="email">
-                <label for="username">Email</label>
-
+                <input id="email" type="text" class="validate" formControlName="email"
+                       [ngClass]="{'is-invalid':fc('email')?.errors
+                       && (fc('email')?.dirty || fc('email')?.touched)}">
+                <label for="email">Email</label>
+                <div class="invalid-feedback" *ngIf="fc('email')?.errors">
+                  Valid email is required.
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
-                <input id="password" type="password" class="validate" formControlName="password">
+                <input id="password" type="password" class="validate" formControlName="password"
+                       [ngClass]="{'is-invalid':fc('password')?.errors
+                    && (fc('password')?.dirty || fc('password')?.touched)}">
                 <label for="password">Password</label>
+                <div class="invalid-feedback" *ngIf="fc('password')?.errors">
+                  Valid password is required: at least 8 characters (1 uppercase letter, 1 lowercase letter, 1 number).
+                </div>
               </div>
 
             </div>

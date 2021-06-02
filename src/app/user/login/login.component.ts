@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {InitService} from '../../shared/materialize/init.service';
 import {AuthenticationService} from '../../shared/service/authentication.service';
@@ -28,8 +28,13 @@ export class LoginComponent implements OnInit {
               private initService: InitService
   ) {
     this.loginForm = this.formBuilder.group({
-      email: '',
-      password: ''
+      email: ['', {validators: [Validators.required, Validators.email]}],
+      password: ['', {
+        validators:
+          [Validators.required,
+            Validators.minLength(8),
+            Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$')]
+      }]
     });
   }
 
@@ -53,7 +58,12 @@ export class LoginComponent implements OnInit {
         (fault => {
           console.log('login failed');
           this.sending = false;
+          if (fault.status === 403){
+            console.log('test it is 403');
+            console.log(fault.toLocaleString());
+          }
           if (fault.status === 401) {
+            console.log('401');
             this.wrongUsernameOrPassword = true;
           } else {
             this.error = true;
@@ -67,4 +77,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.logout();
   }
 
+  fc(controlName: string): AbstractControl | null {
+    return this.loginForm.get(controlName);
+  }
 }

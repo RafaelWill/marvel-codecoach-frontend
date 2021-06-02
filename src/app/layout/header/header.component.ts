@@ -38,21 +38,4 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.authenticationService.logout();
   }
 
-  /*getFullName(): string {
-    if (!this.authenticationService.getUserId()) {
-      return 'not logged in';
-    }
-
-    let firstName: string;
-    let lastName: string;
-
-    this.personService.findById(this.authenticationService.getUserId()!).subscribe(
-      user => {
-        firstName = user.firstName;
-        lastName = user.lastName;
-      }
-
-    );
-    return `${firstName} ${lastName}`;
-  }*/
 }

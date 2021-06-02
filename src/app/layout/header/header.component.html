@@ -10,7 +10,7 @@
 
         <li *ngIf="authenticationService.isLoggedIn()">
           <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-1'
-             href="#">{{fullName}}<i class="material-icons right">face</i></a>
+             href='#'>{{fullName}}<i class="material-icons right">face</i></a>
           <ul id="dropdown-profile-1" class='dropdown-content'>
             <li><a class="waves-light" routerLink="/users/{{userId}}">My profile <i class="material-icons right">person</i></a>
             </li>
@@ -33,9 +33,9 @@
         <li><a routerLink="home">Home</a></li>
 
         <li *ngIf="authenticationService.isLoggedIn()">
-          <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-1'
+          <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-2'
              href="#">{{fullName}}<i class="material-icons right">face</i></a>
-          <ul id="dropdown-profile" class='dropdown-content'>
+          <ul id="dropdown-profile-2" class='dropdown-content'>
             <li><a class="waves-light" routerLink="/users/{{userId}}">My profile <i class="material-icons right">person</i></a>
             </li>
             <li><a class="waves-light red lighten-2 white-text" routerLink="/home" (click)="logout()">Log out<i
