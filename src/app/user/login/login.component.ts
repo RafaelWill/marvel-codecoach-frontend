@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   error!: boolean;
   success!: boolean;
   sending!: boolean;
-  wrongUsernameOrPassword!: boolean;
-  userUnknown!: boolean;
+  emailNotExist!: boolean;
+  correctEmailButWrongPassword!: boolean;
   loginForm;
   title = 'Sign in';
   userId?: string | null;
@@ -60,13 +60,15 @@ export class LoginComponent implements OnInit {
         (fault => {
           console.log('login failed');
           this.sending = false;
-          if (fault.status === 403){
-            console.log('test it is 403');
-            console.log(fault.toLocaleString());
+          if (fault.status === 418){
+            this.correctEmailButWrongPassword = true;
+            this.emailNotExist = false;
+            console.log('test: Status is 418 pwd');
           }
-          if (fault.status === 401) {
-            console.log('401');
-            this.wrongUsernameOrPassword = true;
+          else if (fault.status === 401) {
+            console.log('test: Status is 401');
+            this.emailNotExist = true;
+            this.correctEmailButWrongPassword = false;
           } else {
             this.error = true;
           }
