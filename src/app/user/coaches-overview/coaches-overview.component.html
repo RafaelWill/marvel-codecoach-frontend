@@ -8,6 +8,30 @@
     </div>
   </div>
 
+
+  <div class="coachsearch row mt-3" >
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="input-field">
+          <select id="topic" multiple ngModel="" (ngModelChange)="onItemSelect($event)">
+              <option value="" disabled selected> Choose topic</option>
+              <option *ngFor="let ddtopic of coachTopics" [value]="ddtopic"> {{ddtopic}}</option>
+            </select>
+            <label for="topic">Filter by topic</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="input-field">
+        <input id="namefilter" type="text" [(ngModel)]="searchText" (ngModelChange)="onTextChange()"><!-- (change)="saverange()" -->
+        <label for="namefilter">First name, Last name or email</label>
+      </div>
+
+    </div>
+  </div>
+
   <div class="center mt-5" *ngIf="isLoading">
     <app-loading-spinner></app-loading-spinner>
   </div>
