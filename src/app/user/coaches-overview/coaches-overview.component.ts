@@ -13,13 +13,8 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class CoachesOverviewComponent implements OnInit, AfterViewInit {
 
-  constructor(private service: PersonService,
-              private authenticationService: AuthenticationService,
-              private initService: InitService,
-              private route: ActivatedRoute) {
-  }
-
   private _coaches: Array<Person> = [];
+
   private _coachesDisplay: Array<Person> = [];
   private _topics: Array<string> = [];
   isLoading = true;
@@ -32,6 +27,12 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
 
   private static searchContainsText(coach: Person, text: string): boolean {
     return coach.firstName.toLowerCase().includes(text) || coach.lastName.toLowerCase().includes(text) || coach.email.toLowerCase().includes(text) || coach.firstName.concat(' ', coach.lastName).toLowerCase().includes(text);
+  }
+
+  constructor(private service: PersonService,
+              private authenticationService: AuthenticationService,
+              private initService: InitService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
