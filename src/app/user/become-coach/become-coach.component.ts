@@ -41,7 +41,7 @@ export class BecomeCoachComponent implements OnInit, AfterViewInit {
     const personIdFromRoute = String(routeParams.get('id'));
     this.personService
       .findById(personIdFromRoute)
-      .subscribe(person => this._person = person);
+      .subscribe(person => { this._person = person; });
 
     this._becomeCoachForm = this._formBuilder.group({
       motivation: ['', [Validators.required] ],
