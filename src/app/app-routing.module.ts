@@ -23,6 +23,7 @@ const routes: Routes = [
   {path: 'users/:id', component: UserProfileComponent, canActivate: [AuthorizeGuard]},
   {path: 'users/:id/become-coach', component: BecomeCoachComponent, canActivate: [AuthorizeGuard]},
   {path: 'sessions/:coachId/request-session', component: RequestSessionComponent, canActivate: [AuthorizeGuard]},
+  {path: 'coach-profile/:coachId', component: CoachProfileComponent},
   {path: 'unauthorized', component: Error401Component},
   {path: 'forbidden', component: Error403Component},
   {path: 'not-found', component: Error404Component},
