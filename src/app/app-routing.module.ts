@@ -13,21 +13,23 @@ import {CoachProfileComponent} from './user/coach-profile/coach-profile.componen
 
 import {AuthorizeGuard} from './shared/util/authorize-guard';
 import {Error403Component} from './error/error403/error403.component';
+import {MyCoachProfileComponent} from './user/my-coach-profile/my-coach-profile.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'users/register', component: RegisterUserComponent},
-  {path: 'users/coaches', component: CoachesOverviewComponent, canActivate: [AuthorizeGuard]},
   {path: 'users/:id', component: UserProfileComponent, canActivate: [AuthorizeGuard]},
+  {path: 'users/:id/find-coaches', component: CoachesOverviewComponent, canActivate: [AuthorizeGuard]},
   {path: 'users/:id/become-coach', component: BecomeCoachComponent, canActivate: [AuthorizeGuard]},
+  {path: 'users/:id/my-coach-profile', component: MyCoachProfileComponent, canActivate: [AuthorizeGuard]},
   {path: 'sessions/:coachId/request-session', component: RequestSessionComponent, canActivate: [AuthorizeGuard]},
-  {path: 'coach-profile/:coachId', component: CoachProfileComponent},
+  {path: 'coach-profile/:coachId', component: CoachProfileComponent, canActivate: [AuthorizeGuard]},
   {path: 'unauthorized', component: Error401Component},
   {path: 'forbidden', component: Error403Component},
   {path: 'not-found', component: Error404Component},
-  {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
+  {path: '**', redirectTo: 'not-found', pathMatch: 'full'},
   ];
 
 @NgModule({

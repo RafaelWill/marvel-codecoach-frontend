@@ -23,6 +23,7 @@ import {AuthenticationInterceptor} from './shared/util/authentication.intercepto
 import { CoachProfileComponent } from './user/coach-profile/coach-profile.component';
 import { Error403Component } from './error/error403/error403.component';
 import {ErrorInterceptor} from './shared/util/error.interceptor';
+import { MyCoachProfileComponent } from './user/my-coach-profile/my-coach-profile.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {ErrorInterceptor} from './shared/util/error.interceptor';
     LoginComponent,
     Error403Component,
     LoginComponent,
-    CoachProfileComponent
+    CoachProfileComponent,
+    MyCoachProfileComponent
   ],
   imports: [
     BrowserModule,

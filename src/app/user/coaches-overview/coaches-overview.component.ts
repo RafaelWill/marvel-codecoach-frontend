@@ -4,6 +4,7 @@ import {PersonService} from '../../shared/service/person.service';
 import {AuthenticationService} from '../../shared/service/authentication.service';
 import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {InitService} from '../../shared/materialize/init.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-coaches-overview',
@@ -15,19 +16,21 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
   private _coachesDisplay: Array<Person> = [];
   private _topics: Array<string> = [];
   isLoading = true;
-  userId!: string | null;
   searchText = '';
   private  minLengtTosearch = 3;
   private _tempitem: Array<string> = [];
+  isCoach = false;
+  private _person!: Person;
 
   constructor(private service: PersonService,
               private authenticationService: AuthenticationService,
-              private initService: InitService) {
+              private initService: InitService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.getCoaches();
-    this.userId = this.authenticationService.getUserId();
+    this.getPerson();
   }
 
   ngAfterViewInit(): void {
@@ -60,6 +63,10 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
 
   get coachTopics(): Array<string> {
     return this._topics;
+  }
+
+  get person(): Person {
+    return this._person;
   }
 
   onItemSelect(item: string[]): void {
@@ -107,6 +114,24 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
           }
         }
       });
+    }
+  }
+
+  private getPerson(): void {
+    const routeParams = this.route.snapshot.paramMap;
+    const personIdFromRoute = String(routeParams.get('id'));
+    this.service
+      .findById(personIdFromRoute)
+      .subscribe(person => { this._person = person;
+                             this.assertIfCoach();
+        },
+        error => { console.log(error);
+      });
+  }
+
+  assertIfCoach(): void {
+    if (this.person.roles.includes('COACH')){
+      this.isCoach = true;
     }
   }
 }

@@ -2,8 +2,9 @@
   <div class="nav-content yellow darken-2">
     <div class="container">
       <ul class="tabs tabs-transparent">
-        <li class="tab"><a class="grey-text text-darken-2" routerLink="../{{userId}}">My Profile</a></li>
+        <li class="tab"><a class="grey-text text-darken-2" routerLink="..">My Profile</a></li>
         <li class="tab"><a class="black-text text-darken-2">Find a coach</a></li>
+        <li class="tab"><a class="grey-text text-darken-2" routerLink="../my-coach-profile" *ngIf="isCoach">My Coach Profile</a></li>
       </ul>
     </div>
   </div>
