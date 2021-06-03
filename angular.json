@@ -18,6 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
+              "rxjs-compat",
               "lodash"
             ],
             "outputPath": "dist/marvel-codecoach-frontend",

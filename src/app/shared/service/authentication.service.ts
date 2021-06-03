@@ -97,6 +97,9 @@ export class AuthenticationService {
   }
 
   getExpirationDate(): number {
+   if (this.decodedToken() === null){
+     return 0;
+   }
    const expirationDate = +this.decodedToken().exp;
    return new Date(expirationDate * 1000).getTime() - new Date().getTime();
   }
