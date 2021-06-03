@@ -11,18 +11,31 @@ import {InitService} from '../../shared/materialize/init.service';
   styleUrls: ['./coaches-overview.component.css']
 })
 export class CoachesOverviewComponent implements OnInit, AfterViewInit {
+
+  constructor(private service: PersonService,
+              private authenticationService: AuthenticationService,
+              private initService: InitService) {
+  }
+
+  get coaches(): Array<Person> {
+    return this._coachesDisplay;
+  }
+
+  get coachTopics(): Array<string> {
+    return this._topics;
+  }
+
   private _coaches: Array<Person> = [];
   private _coachesDisplay: Array<Person> = [];
   private _topics: Array<string> = [];
   isLoading = true;
   userId!: string | null;
   searchText = '';
-  private  minLengtTosearch = 3;
+  private minLengtTosearch = 3;
   private _tempitem: Array<string> = [];
 
-  constructor(private service: PersonService,
-              private authenticationService: AuthenticationService,
-              private initService: InitService) {
+  private static searchContainsText(coach: Person, text: string): boolean {
+    return coach.firstName.toLowerCase().includes(text) || coach.lastName.toLowerCase().includes(text) || coach.email.toLowerCase().includes(text) || coach.firstName.concat(' ', coach.lastName).toLowerCase().includes(text);
   }
 
   ngOnInit(): void {
@@ -54,14 +67,6 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
     this._topics = Array.from(new Set(temp.map(x => x.topic.toLowerCase())));
   }
 
-  get coaches(): Array<Person> {
-    return this._coachesDisplay;
-  }
-
-  get coachTopics(): Array<string> {
-    return this._topics;
-  }
-
   onItemSelect(item: string[]): void {
     this._coachesDisplay = [];
     this._tempitem = [];
@@ -75,34 +80,24 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
     this.filterCoaches();
   }
 
-  private filterCoaches(): void{
-    if (this._tempitem.length === 0 && this.searchText.length <= 2){
+  private filterCoaches(): void {
+    if (this._tempitem.length === 0 && this.searchText.length <= 2) {
       this._coachesDisplay = this._coaches;
-    }
-    else if (this._tempitem.length === 0 && this.searchText.length > 2){
+    } else if (this._tempitem.length === 0 && this.searchText.length > 2) {
       this._coaches.forEach(coach => {
-          if (this.searchText.length >= this.minLengtTosearch){
-            // tslint:disable-next-line:max-line-length
-            if (coach.firstName.toLowerCase().includes(this.searchText.toLowerCase()) || coach.lastName.toLowerCase().includes(this.searchText.toLowerCase()) || coach.email.toLowerCase().includes(this.searchText.toLowerCase())){
-              this._coachesDisplay.push(coach);
-            }
-          }
-          else{
-            this._coachesDisplay.push(coach);
-          }
+        if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
+          this._coachesDisplay.push(coach);
+        }
       });
-    }
-    else if (this._tempitem.length >= 1){
+    } else if (this._tempitem.length >= 1) {
       this._coaches.forEach(coach => {
         const filteredTopic = coach.coachingTopics.filter(x => this._tempitem.some(y => x.topic.toLowerCase() === y));
         if (filteredTopic.length > 0) {
-          if (this.searchText.length >= this.minLengtTosearch){
-            // tslint:disable-next-line:max-line-length
-            if (coach.firstName.toLowerCase().includes(this.searchText.toLowerCase()) || coach.lastName.toLowerCase().includes(this.searchText.toLowerCase()) || coach.email.toLowerCase().includes(this.searchText.toLowerCase())){
+          if (this.searchText.length >= this.minLengtTosearch) {
+            if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
               this._coachesDisplay.push(coach);
             }
-          }
-          else{
+          } else {
             this._coachesDisplay.push(coach);
           }
         }

@@ -20,6 +20,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { Error401Component } from './error/error401/error401.component';
 import { LoginComponent } from './user/login/login.component';
 import {AuthenticationInterceptor} from './shared/util/authentication.interceptor';
+import { CoachProfileComponent } from './user/coach-profile/coach-profile.component';
 import { Error403Component } from './error/error403/error403.component';
 import {ErrorInterceptor} from './shared/util/error.interceptor';
 
@@ -39,7 +40,9 @@ import {ErrorInterceptor} from './shared/util/error.interceptor';
     LoadingSpinnerComponent,
     Error401Component,
     LoginComponent,
-    Error403Component
+    Error403Component,
+    LoginComponent,
+    CoachProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -49,12 +52,8 @@ import {ErrorInterceptor} from './shared/util/error.interceptor';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers:
-    [
-      CookieService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
-  ],
+  providers: [CookieService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

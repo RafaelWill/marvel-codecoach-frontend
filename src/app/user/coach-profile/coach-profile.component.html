@@ -1,0 +1,125 @@
+<div class="row">
+<div class="col-3 s12 m2">
+  <div class="content-container">
+    <h6>My Profile</h6>
+    <div class="collection">
+      <a class="collection-item black-text active yellow darken-2" routerLink="/coach-profile/{{idToGet}}" >Profile Information</a>
+      <!--        <a class="collection-item grey-text text-darken-2">Coaching sessions</a>-->
+<!--      <a routerLink="become-coach" class="collection-item grey-text text-darken-2" >Apply to become a coach</a>-->
+    </div>
+  </div>
+</div>
+
+<div class="col-9 s12 m10">
+  <div class="content-container">
+
+    <section class="card-panel grey lighten-5" *ngIf="coach">
+      <div class="row">
+
+        <div class="col s4">
+          <h5 translate>profile information</h5>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col-3 l4 m4 s12">
+          <img src="assets/images/dummy/dummy-profile-pic.png" class="responsive-img circle"
+               alt="Profile Picture">
+        </div>
+        <div class="col-9 l10 m12 s12">
+          <table  class="highlight">
+            <tbody>
+            <tr>
+              <td><strong>First name</strong></td>
+              <td>{{coach.firstName}}</td>
+            </tr>
+            <tr>
+              <td><strong>Last name</strong></td>
+              <td>{{coach.lastName}}</td>
+            </tr>
+            <tr>
+              <td><strong>Email</strong></td>
+              <td>{{coach.email}}</td>
+            </tr>
+            <tr>
+            <tr>
+              <td><strong>Code Coach role</strong></td>
+              <td>{{coach.roles | join:', ' | lowercase }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+<!--      <div *ngIf="authenticationService.isAdmin()" class="col">-->
+<!--        <a class="waves-effect waves-light btn yellow darken-2 black-text" [routerLink]="'/coachee/' + coach.id + '/edit-profile'" translate>coach-profile-information.button<i class="material-icons left">edit</i></a>-->
+<!--      </div>-->
+    </section>
+    <div>
+      <!--      <div class="divider"></div>
+     <section class="card-panel grey lighten-5 ">-->
+<!--        <h5 translate>coach information</h5>-->
+<!--        <div class="divider"></div>-->
+<!--        <div class="row">-->
+<!--          <div class="col l12 m12 s12">-->
+<!--            <table class="highlight">-->
+<!--              <tbody>-->
+<!--              <tr>-->
+<!--                <td><strong translate>introduction</strong></td>-->
+<!--                <td translate>{{coach.introduction}}</td>-->
+<!--                <td>no idea</td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td><strong translate>availability</strong></td>-->
+<!--                <td>{{coach.availability}}</td>-->
+<!--                <td>no idea</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div *ngIf="coach !== null"  class="col">-->
+<!--          <a class="waves-effect waves-light btn teal lighten-3 black-text " [routerLink]="'/coach/' + idToGet + '/edit-coach-information'" translate>edit<i class="material-icons left">edit</i></a>-->
+<!--        </div>-->
+<!--      </section>-->
+
+      <div class="divider"></div>
+      <section class="card-panel grey lighten-5">
+        <h5 translate>coaching topics</h5>
+        <div class="divider"></div>
+        <div class="row">
+          <div class="col s12">
+            <table class="highlight">
+              <tbody>
+              <tr *ngFor="let topic of topics">
+                <td><strong>{{topic.topic}}</strong></td>
+                <td>
+                  <div class="center">
+                    <a class="btn-floating " [class.disabled]="topic.grade!==(1)"><i class="material-icons">filter_1</i></a>
+                    <a class="btn-floating " [class.disabled]="topic.grade!==(2)"><i class="material-icons">filter_2</i></a>
+                    <a class="btn-floating " [class.disabled]="topic.grade!==(3)"><i class="material-icons">filter_3</i></a>
+                    <a class="btn-floating " [class.disabled]="topic.grade!==(4)"><i class="material-icons">filter_4</i></a>
+                    <a class="btn-floating " [class.disabled]="topic.grade!==(5)"><i class="material-icons">filter_5</i></a>
+                    <a class="btn-floating " [class.disabled]="topic.grade!== (6)"><i class="material-icons">filter_6</i></a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+<!--        <div class="col" *ngIf="authenticationService.isAdmin()">-->
+<!--          <a class="waves-effect waves-light btn teal lighten-3 black-text " [routerLink]="'/coach/' + idToGet + '/edit-topic'" translate>coaching-topics.button<i class="material-icons left">edit</i></a>-->
+<!--        </div>-->
+      </section>
+      <div>
+        <br>
+      </div>
+      <div class="center">
+        <button class="waves-effect waves-light yellow darken-2 btn-large black-text" routerLink="../../sessions/{{idToGet}}/request-session" translate>request session<i class="material-icons left">event</i></button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
