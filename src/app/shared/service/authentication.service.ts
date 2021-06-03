@@ -9,6 +9,7 @@ import {PersonService} from './person.service';
 import {Person} from '../model/person';
 import {flatMap} from 'rxjs/internal/operators';
 import {Router} from '@angular/router';
+import {RoleFeature} from '../model/role-feature.enum';
 
 
 @Injectable({
@@ -48,8 +49,6 @@ export class AuthenticationService {
         tap(_ => this._isUserLoggedIn.next(true))
       );
   }
-
-
   getCurrentToken(): string | null {
     return this.localStorage.get(this._tokenKey);
   }
@@ -63,6 +62,13 @@ export class AuthenticationService {
       return null;
     }
     return this.decodedToken().userId;
+  }
+
+  getFullName(): string {
+    if (!this.getUserId()) {
+      return 'Username unknown';
+    }
+    return this.localStorage.get(this._fullnameKey)!;
   }
 
   logout(): void {
@@ -85,17 +91,6 @@ export class AuthenticationService {
     }, expirationDuration);
   }
 
-  getFullName(): string {
-    if (!this.getUserId()) {
-      return 'Username unknown';
-    }
-    return this.localStorage.get(this._fullnameKey)!; // TODO return observable and use it in header
-  }
-
-  private decodedToken(): { [key: string]: string } {
-    return this._jwtHelper.decodeToken(this.getCurrentToken()!);
-  }
-
   getExpirationDate(): number {
    if (this.decodedToken() === null){
      return 0;
@@ -103,25 +98,25 @@ export class AuthenticationService {
    const expirationDate = +this.decodedToken().exp;
    return new Date(expirationDate * 1000).getTime() - new Date().getTime();
   }
-}
 
-/*
   hasFeatureAccess(feature: string): boolean {
     if (!this.isLoggedIn()) {
       return false;
     }
-    return this.decodedToken().rol.includes(feature);    // TODO adapt roles / features
+    return this.getFeatures().includes(feature);
   }
 
-  getExpiryTime(): number {
-    return this.decodedToken ? parseFloat(this.decodedToken().exp) : 0;
-  }
-
-  isTokenExpired(): boolean {
-    const expiryTime: number = this.getExpiryTime();
-    if (expiryTime) {
-      return ((1000 * expiryTime) - (new Date()).getTime()) < 5000;
-    } else {
-      return false;
+  private getFeatures(): Array<string> {
+    const features = [];
+    for (const i of this.decodedToken().rol) {
+      // @ts-ignore
+      features.push(i.authority);
     }
-  }*/
+    return features;
+  }
+  private decodedToken(): { [key: string]: string } {
+    return this._jwtHelper.decodeToken(this.getCurrentToken()!);
+  }
+}
+
+

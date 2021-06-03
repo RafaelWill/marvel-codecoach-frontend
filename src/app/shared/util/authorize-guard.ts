@@ -17,13 +17,6 @@ export class AuthorizeGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     if (this.authenticationService.isLoggedIn()) {
-      /*if (this.authenticationService.isTokenExpired()) { // TODO add expiracy validation
-        // Should Redirect Sig-In Page
-      }
-      else {
-        return true;
-      }*/
-
       // logged in so return true
       return true;
     }
