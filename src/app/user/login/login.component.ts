@@ -10,11 +10,10 @@ import {AuthenticationService} from '../../shared/service/authentication.service
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  error!: boolean;
   success!: boolean;
   sending!: boolean;
-  emailNotExist!: boolean;
-  correctEmailButWrongPassword!: boolean;
+  error!: boolean;
+  wrongCredentials!: boolean;
   loginForm;
   title = 'Sign in';
   userId?: string | null;
@@ -51,28 +50,24 @@ export class LoginComponent implements OnInit {
     this.success = false;
     this.authenticationService.login(loginData)
       .subscribe(
-        ( res => {
+         res => {
           this.success = true;
           this.initService.initDropdowns();
           this.userId = this.authenticationService.getUserId();
           this.router.navigateByUrl( `users/${this.userId}`);
-        }),
-        (fault => {
+        },
+        err => {
           console.log('login failed');
           this.sending = false;
-          if (fault.status === 418){
-            this.correctEmailButWrongPassword = true;
-            this.emailNotExist = false;
-            console.log('test: Status is 418 pwd');
-          }
-          else if (fault.status === 401) {
-            console.log('test: Status is 401');
-            this.emailNotExist = true;
-            this.correctEmailButWrongPassword = false;
+          if (err.status === 401) {
+            this.wrongCredentials = true;
+            this.error = false;
           } else {
+            console.log(err);
             this.error = true;
+            this.wrongCredentials = false;
           }
-        })
+        }
       );
     this.loginForm.reset();
   }

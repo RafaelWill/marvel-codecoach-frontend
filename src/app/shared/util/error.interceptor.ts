@@ -23,8 +23,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.log('error 403');
         this.router.navigate(['forbidden']);
       }
-
-      const error = err.error.message || err.statusText;
+      if (err.status === 401) {
+        console.log('error 401');
+      }
+      console.error(err);
+      const error = err.message || err.statusText;
       return throwError(error);
     }));
   }

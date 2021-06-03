@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     const expirationDate = this.authenticationService.getExpirationDate();
-    console.log(expirationDate);
+    if (expirationDate !== 0){ console.log('session expiration:' + expirationDate); }
     this.authenticationService.autoLogout(expirationDate);
   }
 }
