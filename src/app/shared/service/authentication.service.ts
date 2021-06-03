@@ -106,6 +106,10 @@ export class AuthenticationService {
     return this.getFeatures().includes(feature);
   }
 
+  isCoach(): boolean{
+    return this.hasFeatureAccess(RoleFeature.findCoaches) && !this.hasFeatureAccess(RoleFeature.becomeCoach);
+  }
+
   private getFeatures(): Array<string> {
     const features = [];
     for (const i of this.decodedToken().rol) {
