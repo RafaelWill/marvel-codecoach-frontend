@@ -11,21 +11,22 @@ import {Error401Component} from './error/error401/error401.component';
 import {LoginComponent} from './user/login/login.component';
 import {CoachProfileComponent} from './user/coach-profile/coach-profile.component';
 
-import {AuthorizeGuard} from './shared/util/authorize-guard';
+import {AuthenticatedGuard} from './shared/util/authorization-guard/authenticated.guard';
 import {Error403Component} from './error/error403/error403.component';
 import {MyCoachProfileComponent} from './user/my-coach-profile/my-coach-profile.component';
+import {BecomeCoachGuard} from './shared/util/authorization-guard/become-coach.guard';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'users/register', component: RegisterUserComponent},
-  {path: 'users/:id', component: UserProfileComponent, canActivate: [AuthorizeGuard]},
-  {path: 'users/:id/find-coaches', component: CoachesOverviewComponent, canActivate: [AuthorizeGuard]},
-  {path: 'users/:id/become-coach', component: BecomeCoachComponent, canActivate: [AuthorizeGuard]},
-  {path: 'users/:id/my-coach-profile', component: MyCoachProfileComponent, canActivate: [AuthorizeGuard]},
-  {path: 'sessions/:coachId/request-session', component: RequestSessionComponent, canActivate: [AuthorizeGuard]},
-  {path: 'coach-profile/:coachId', component: CoachProfileComponent, canActivate: [AuthorizeGuard]},
+  {path: 'users/:id', component: UserProfileComponent, canActivate: [AuthenticatedGuard]},
+  {path: 'users/:id/find-coaches', component: CoachesOverviewComponent, canActivate: [AuthenticatedGuard]},
+  {path: 'users/:id/become-coach', component: BecomeCoachComponent, canActivate: [BecomeCoachGuard]},
+  {path: 'users/:id/my-coach-profile', component: MyCoachProfileComponent, canActivate: [AuthenticatedGuard]},
+  {path: 'sessions/:coachId/request-session', component: RequestSessionComponent, canActivate: [AuthenticatedGuard]},
+  {path: 'coach-profile/:coachId', component: CoachProfileComponent, canActivate: [AuthenticatedGuard]},
   {path: 'unauthorized', component: Error401Component},
   {path: 'forbidden', component: Error403Component},
   {path: 'not-found', component: Error404Component},
