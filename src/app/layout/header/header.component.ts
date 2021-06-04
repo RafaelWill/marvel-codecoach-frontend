@@ -4,7 +4,6 @@ import {InitService} from '../../shared/materialize/init.service';
 import {filter} from 'rxjs/operators';
 import {PersonService} from '../../shared/service/person.service';
 import {LocalStorageService} from '../../shared/service/local-storage.service';
-import {BecomeCoachComponent} from '../../user/become-coach/become-coach.component';
 
 @Component({
   selector: 'app-header',
@@ -14,25 +13,36 @@ import {BecomeCoachComponent} from '../../user/become-coach/become-coach.compone
 export class HeaderComponent implements OnInit, AfterViewInit {
   fullName!: string;
   userId!: string | null;
+  isCoach!: boolean;
 
   constructor(public authenticationService: AuthenticationService,
               private localStorage: LocalStorageService,
               private personService: PersonService,
               private initService: InitService
-             ) {
+  ) {
   }
 
   ngOnInit(): void {
     if (this.authenticationService.getUserId() !== null) {
       this.userId = this.authenticationService.getUserId();
       this.fullName = this.authenticationService.getFullName();
+      this.isCoach = this.authenticationService.isCoach();
     }
 
     this.authenticationService.isUserLoggedIn$
       .pipe(filter(isLoggedIn => isLoggedIn === true))
-      .subscribe(_ => { this.fullName = this.authenticationService.getFullName();
-                        this.userId = this.authenticationService.getUserId();
-                        });
+      .subscribe(_ => {
+        this.fullName = this.authenticationService.getFullName();
+        this.userId = this.authenticationService.getUserId();
+        this.isCoach = this.authenticationService.isCoach();
+        this.initService.initDropdowns();
+      });
+
+    this.personService.hasBecomeCoach$
+      .pipe(filter(hasBecomeCoach => hasBecomeCoach === true))
+      .subscribe(_ => {
+        this.isCoach = true;
+      });
   }
 
   ngAfterViewInit(): void {
@@ -43,4 +53,5 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   logout(): void {
     this.authenticationService.logout();
   }
+
 }

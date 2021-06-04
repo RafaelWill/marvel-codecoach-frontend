@@ -93,7 +93,6 @@ export class RegisterUserComponent implements OnInit {
       } else {
         passwordConfirmationInput.setErrors(null);
       }
-      console.log('check');
     };
   }
 

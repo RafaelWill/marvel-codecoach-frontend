@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Person} from '../model/person';
 import {map} from 'rxjs/operators';
 
@@ -11,6 +11,9 @@ import {map} from 'rxjs/operators';
 export class PersonService {
 
   private readonly _url: string;
+
+  private _hasBecomeCoach = new Subject<boolean>();
+  hasBecomeCoach$ = this._hasBecomeCoach.asObservable();
 
   constructor(private _http: HttpClient) {
     this._url = `${environment.backendUrl}/users`;
@@ -30,5 +33,9 @@ export class PersonService {
 
   becomeCoach(id: string, coachData: FormData): Observable<any> {
     return this._http.post(`${this._url}/${id}/become-coach`, coachData);
+  }
+
+  hasBecomeCoach(): void{
+    this._hasBecomeCoach.next(true);
   }
 }

@@ -12,9 +12,9 @@
           <ul id="dropdown-profile-1" class='dropdown-content'>
             <li><a class="waves-light" routerLink="/users/{{userId}}">My Coachee Profile<i class="material-icons right">person</i></a>
             </li>
-            <li *ngIf="authenticationService.isCoach()"><a class="waves-light" routerLink="/users/{{userId}}/my-coach-profile">My Coach Profile<i class="material-icons right">person</i></a>
+            <li *ngIf="isCoach"><a class="waves-light" routerLink="/users/{{userId}}/my-coach-profile">My Coach Profile<i class="material-icons right">person</i></a>
             </li>
-            <li *ngIf="!authenticationService.isCoach()"><a class="waves-light" routerLink="/users/{{userId}}/become-coach">Become a Coach<i class="material-icons right">send</i></a>
+            <li *ngIf="!isCoach"><a class="waves-light" routerLink="/users/{{userId}}/become-coach">Become a Coach<i class="material-icons right">send</i></a>
             </li>
             <li><a class="waves-light red lighten-2 white-text" routerLink="/home" (click)="logout()">Log out<i
               class="material-icons right">power_settings_new</i></a></li>

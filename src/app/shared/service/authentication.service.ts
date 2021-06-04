@@ -104,6 +104,7 @@ export class AuthenticationService {
   isCoach(): boolean {
     return this.hasFeatureAccess(RoleFeature.findCoaches) && !this.hasFeatureAccess(RoleFeature.becomeCoach);
   }
+
 }
 
 
