@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../shared/service/authentication.service';
 
 @Component({
   selector: 'app-error403',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Error403Component implements OnInit {
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
   }
-
+  get isLoggedIn(): boolean{
+    return this.authenticationService.isLoggedIn();
+  }
 }
