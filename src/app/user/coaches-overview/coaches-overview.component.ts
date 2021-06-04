@@ -5,13 +5,14 @@ import {AuthenticationService} from '../../shared/service/authentication.service
 import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {InitService} from '../../shared/materialize/init.service';
 import {ActivatedRoute} from '@angular/router';
+import {newArray} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-coaches-overview',
   templateUrl: './coaches-overview.component.html',
   styleUrls: ['./coaches-overview.component.css']
 })
-export class CoachesOverviewComponent implements OnInit, AfterViewInit {
+export class CoachesOverviewComponent implements OnInit {
 
   private _coaches: Array<Person> = [];
 
@@ -20,19 +21,17 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
   isLoading = true;
   userId!: string | null;
   searchText = '';
-  private minLengtTosearch = 3;
+  private readonly minLengtTosearch = 3;
   private _tempitem: Array<string> = [];
-  isCoach = false;
   private _person!: Person;
 
   private static searchContainsText(coach: Person, text: string): boolean {
     return coach.firstName.toLowerCase().includes(text) || coach.lastName.toLowerCase().includes(text) || coach.email.toLowerCase().includes(text) || coach.firstName.concat(' ', coach.lastName).toLowerCase().includes(text);
   }
 
-  constructor(private service: PersonService,
+  constructor(private personService: PersonService,
               private authenticationService: AuthenticationService,
-              private initService: InitService,
-              private route: ActivatedRoute) {
+              private initService: InitService) {
   }
 
   ngOnInit(): void {
@@ -40,28 +39,24 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
     this.getPerson();
   }
 
-  ngAfterViewInit(): void {
-    this.initService.initFormSelect();
-  }
-
-  private getCoaches(): void {
-    this.service.getAllCoaches().subscribe(x => {
-        this._coaches = x;
-        this._coachesDisplay = x;
-        this.isLoading = false;
+    private getCoaches(): void {
+    this.personService.getAllCoaches().subscribe(allCoaches => {
+        const allCoachesButUser = allCoaches.filter(coach => coach.id !== this.authenticationService.getUserId());
+        this._coaches = allCoachesButUser;
+        this._coachesDisplay = allCoachesButUser;
         this.makeTopicSearchList();
         this.initService.initFormSelect();
       },
       error => {
         console.log(error);
-        this.isLoading = false;
       });
+    this.isLoading = false;
   }
 
   private makeTopicSearchList(): void {
     const temp: Array<CoachingTopic> = [];
-    this._coaches.forEach(x => x.coachingTopics.forEach(y => temp.push(y)));
-    this._topics = Array.from(new Set(temp.map(x => x.topic.toLowerCase())));
+    this._coaches.forEach(coach => coach.coachingTopics.forEach(coachingTopic => temp.push(coachingTopic)));
+    this._topics = Array.from(new Set(temp.map(coachingTopic => coachingTopic.topic.toLowerCase())));
   }
 
   get coaches(): Array<Person> {
@@ -78,7 +73,6 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
 
   onItemSelect(item: string[]): void {
     this._coachesDisplay = [];
-    this._tempitem = [];
     this._tempitem = item;
 
     this.filterCoaches();
@@ -115,20 +109,12 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
   }
 
   private getPerson(): void {
-    const routeParams = this.route.snapshot.paramMap;
-    const personIdFromRoute = String(routeParams.get('id'));
-    this.service
-      .findById(personIdFromRoute)
+    this.personService
+      .findById(this.authenticationService.getUserId()!)
       .subscribe(person => { this._person = person;
-                             this.assertIfCoach();
         },
         error => { console.log(error);
       });
   }
 
-  assertIfCoach(): void {
-    if (this.person.roles.includes('COACH')){
-      this.isCoach = true;
-    }
-  }
 }
