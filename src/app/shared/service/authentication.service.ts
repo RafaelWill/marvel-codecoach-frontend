@@ -31,7 +31,7 @@ export class AuthenticationService {
   constructor(private _http: HttpClient,
               private localStorage: LocalStorageService,
               private personService: PersonService,
-              private router: Router ) {
+              private router: Router) {
     this._url = `${environment.backendUrl}/authenticate`;
   }
 
@@ -49,6 +49,7 @@ export class AuthenticationService {
         tap(_ => this._isUserLoggedIn.next(true))
       );
   }
+
   getCurrentToken(): string | null {
     return this.localStorage.get(this._tokenKey);
   }
@@ -92,11 +93,11 @@ export class AuthenticationService {
   }
 
   getExpirationDate(): number {
-   if (this.decodedToken() === null){
-     return 0;
-   }
-   const expirationDate = +this.decodedToken().exp;
-   return new Date(expirationDate * 1000).getTime() - new Date().getTime();
+    if (this.decodedToken() === null) {
+      return 0;
+    }
+    const expirationDate = +this.decodedToken().exp;
+    return new Date(expirationDate * 1000).getTime() - new Date().getTime();
   }
 
   hasFeatureAccess(feature: string): boolean {
@@ -106,7 +107,10 @@ export class AuthenticationService {
     return this.getFeatures().includes(feature);
   }
 
-  isCoach(): boolean{
+  isCoach(): boolean {
+    if (this.isLoggedIn()) {
+      return false;
+    }
     return this.hasFeatureAccess(RoleFeature.findCoaches) && !this.hasFeatureAccess(RoleFeature.becomeCoach);
   }
 
@@ -118,6 +122,7 @@ export class AuthenticationService {
     }
     return features;
   }
+
   private decodedToken(): { [key: string]: string } {
     return this._jwtHelper.decodeToken(this.getCurrentToken()!);
   }

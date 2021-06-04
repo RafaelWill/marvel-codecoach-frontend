@@ -4,6 +4,7 @@ import {InitService} from '../../shared/materialize/init.service';
 import {filter} from 'rxjs/operators';
 import {PersonService} from '../../shared/service/person.service';
 import {LocalStorageService} from '../../shared/service/local-storage.service';
+import {BecomeCoachComponent} from '../../user/become-coach/become-coach.component';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(public authenticationService: AuthenticationService,
               private localStorage: LocalStorageService,
               private personService: PersonService,
-              private initService: InitService) {
+              private initService: InitService
+             ) {
   }
 
   ngOnInit(): void {
@@ -41,5 +43,4 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   logout(): void {
     this.authenticationService.logout();
   }
-
 }

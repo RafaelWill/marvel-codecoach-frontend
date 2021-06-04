@@ -90,7 +90,6 @@ export class BecomeCoachComponent implements OnInit, AfterViewInit {
       this.becomeACoach().subscribe(
         () =>  {
           this._becomeCoachForm.reset();
-
           this.router.navigate([`users/${this.userId}`]); });
     } else {
       this.hasSubmitFailed = true;
