@@ -5,6 +5,7 @@ import {AuthenticationService} from '../../shared/service/authentication.service
 import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {InitService} from '../../shared/materialize/init.service';
 import {ActivatedRoute} from '@angular/router';
+import {CoachfilterPipe} from '../../shared/pipe/coachfilter.pipe';
 
 @Component({
   selector: 'app-coaches-overview',
@@ -25,14 +26,11 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
   isCoach = false;
   private _person!: Person;
 
-  private static searchContainsText(coach: Person, text: string): boolean {
-    return coach.firstName.toLowerCase().includes(text) || coach.lastName.toLowerCase().includes(text) || coach.email.toLowerCase().includes(text) || coach.firstName.concat(' ', coach.lastName).toLowerCase().includes(text);
-  }
-
   constructor(private service: PersonService,
               private authenticationService: AuthenticationService,
               private initService: InitService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private coachFilter: CoachfilterPipe) {
   }
 
   ngOnInit(): void {
@@ -78,40 +76,14 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
 
   onItemSelect(item: string[]): void {
     this._coachesDisplay = [];
-    this._tempitem = [];
     this._tempitem = item;
 
-    this.filterCoaches();
+    this._coachesDisplay = this.coachFilter.transform(this._coaches, this.searchText, this._tempitem);
   }
 
   onTextChange(): void {
     this._coachesDisplay = [];
-    this.filterCoaches();
-  }
-
-  private filterCoaches(): void {
-    if (this._tempitem.length === 0 && this.searchText.length <= 2) {
-      this._coachesDisplay = this._coaches;
-    } else if (this._tempitem.length === 0 && this.searchText.length > 2) {
-      this._coaches.forEach(coach => {
-        if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
-          this._coachesDisplay.push(coach);
-        }
-      });
-    } else if (this._tempitem.length >= 1) {
-      this._coaches.forEach(coach => {
-        const filteredTopic = coach.coachingTopics.filter(x => this._tempitem.some(y => x.topic.toLowerCase() === y));
-        if (filteredTopic.length > 0) {
-          if (this.searchText.length >= this.minLengtTosearch) {
-            if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
-              this._coachesDisplay.push(coach);
-            }
-          } else {
-            this._coachesDisplay.push(coach);
-          }
-        }
-      });
-    }
+    this._coachesDisplay = this.coachFilter.transform(this._coaches, this.searchText, this._tempitem);
   }
 
   private getPerson(): void {
