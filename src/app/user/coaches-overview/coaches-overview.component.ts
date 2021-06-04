@@ -16,7 +16,7 @@ export class CoachesOverviewComponent implements OnInit {
   private _coaches: Array<Person> = [];
   private _coachesDisplay: Array<Person> = [];
   private _topics: Array<string> = [];
-  isLoading = true;
+  isLoading!: boolean;
   userId!: string | null;
   searchText = '';
   private _tempitem: Array<string> = [];
@@ -34,18 +34,20 @@ export class CoachesOverviewComponent implements OnInit {
     this.getPerson();
   }
 
-    private getCoaches(): void {
+  private getCoaches(): void {
+    this.isLoading = true;
     this.personService.getAllCoaches().subscribe(allCoaches => {
         const allCoachesButUser = allCoaches.filter(coach => coach.id !== this.authenticationService.getUserId());
         this._coaches = allCoachesButUser;
         this._coachesDisplay = allCoachesButUser;
+        this.isLoading = false;
         this.makeTopicSearchList();
         this.initService.initFormSelect();
       },
       error => {
         console.log(error);
+        this.isLoading = false;
       });
-    this.isLoading = false;
   }
 
   private makeTopicSearchList(): void {
