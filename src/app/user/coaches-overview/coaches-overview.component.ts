@@ -4,6 +4,7 @@ import {PersonService} from '../../shared/service/person.service';
 import {AuthenticationService} from '../../shared/service/authentication.service';
 import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {InitService} from '../../shared/materialize/init.service';
+import {CoachfilterPipe} from '../../shared/pipe/coachfilter.pipe';
 
 @Component({
   selector: 'app-coaches-overview',
@@ -18,7 +19,6 @@ export class CoachesOverviewComponent implements OnInit {
   isLoading = true;
   userId!: string | null;
   searchText = '';
-  private readonly minLengtTosearch = 3;
   private _tempitem: Array<string> = [];
   private _person!: Person;
 

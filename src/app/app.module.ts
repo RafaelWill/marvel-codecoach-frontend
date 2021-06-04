@@ -24,6 +24,7 @@ import { CoachProfileComponent } from './user/coach-profile/coach-profile.compon
 import { Error403Component } from './error/error403/error403.component';
 import {ErrorInterceptor} from './shared/util/error.interceptor';
 import { MyCoachProfileComponent } from './user/my-coach-profile/my-coach-profile.component';
+import { CoachfilterPipe } from './shared/pipe/coachfilter.pipe';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MyCoachProfileComponent } from './user/my-coach-profile/my-coach-profil
     Error403Component,
     LoginComponent,
     CoachProfileComponent,
-    MyCoachProfileComponent
+    MyCoachProfileComponent,
+    CoachfilterPipe
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import { MyCoachProfileComponent } from './user/my-coach-profile/my-coach-profil
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [CookieService,
+  providers: [CoachfilterPipe,
+    CookieService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
