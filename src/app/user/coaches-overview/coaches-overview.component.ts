@@ -1,38 +1,32 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Person} from '../../shared/model/person';
 import {PersonService} from '../../shared/service/person.service';
 import {AuthenticationService} from '../../shared/service/authentication.service';
 import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {InitService} from '../../shared/materialize/init.service';
-import {ActivatedRoute} from '@angular/router';
+import {CoachfilterPipe} from '../../shared/pipe/coachfilter.pipe';
 
 @Component({
   selector: 'app-coaches-overview',
   templateUrl: './coaches-overview.component.html',
   styleUrls: ['./coaches-overview.component.css']
 })
-export class CoachesOverviewComponent implements OnInit, AfterViewInit {
+export class CoachesOverviewComponent implements OnInit {
 
   private _coaches: Array<Person> = [];
-
   private _coachesDisplay: Array<Person> = [];
   private _topics: Array<string> = [];
   isLoading = true;
   userId!: string | null;
   searchText = '';
-  private minLengtTosearch = 3;
   private _tempitem: Array<string> = [];
-  isCoach = false;
   private _person!: Person;
 
-  private static searchContainsText(coach: Person, text: string): boolean {
-    return coach.firstName.toLowerCase().includes(text) || coach.lastName.toLowerCase().includes(text) || coach.email.toLowerCase().includes(text) || coach.firstName.concat(' ', coach.lastName).toLowerCase().includes(text);
-  }
 
-  constructor(private service: PersonService,
+  constructor(private personService: PersonService,
               private authenticationService: AuthenticationService,
               private initService: InitService,
-              private route: ActivatedRoute) {
+              private coachFilter: CoachfilterPipe) {
   }
 
   ngOnInit(): void {
@@ -40,28 +34,24 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
     this.getPerson();
   }
 
-  ngAfterViewInit(): void {
-    this.initService.initFormSelect();
-  }
-
-  private getCoaches(): void {
-    this.service.getAllCoaches().subscribe(x => {
-        this._coaches = x;
-        this._coachesDisplay = x;
-        this.isLoading = false;
+    private getCoaches(): void {
+    this.personService.getAllCoaches().subscribe(allCoaches => {
+        const allCoachesButUser = allCoaches.filter(coach => coach.id !== this.authenticationService.getUserId());
+        this._coaches = allCoachesButUser;
+        this._coachesDisplay = allCoachesButUser;
         this.makeTopicSearchList();
         this.initService.initFormSelect();
       },
       error => {
         console.log(error);
-        this.isLoading = false;
       });
+    this.isLoading = false;
   }
 
   private makeTopicSearchList(): void {
     const temp: Array<CoachingTopic> = [];
-    this._coaches.forEach(x => x.coachingTopics.forEach(y => temp.push(y)));
-    this._topics = Array.from(new Set(temp.map(x => x.topic.toLowerCase())));
+    this._coaches.forEach(coach => coach.coachingTopics.forEach(coachingTopic => temp.push(coachingTopic)));
+    this._topics = Array.from(new Set(temp.map(coachingTopic => coachingTopic.topic.toLowerCase())));
   }
 
   get coaches(): Array<Person> {
@@ -78,57 +68,22 @@ export class CoachesOverviewComponent implements OnInit, AfterViewInit {
 
   onItemSelect(item: string[]): void {
     this._coachesDisplay = [];
-    this._tempitem = [];
     this._tempitem = item;
-
-    this.filterCoaches();
+    this._coachesDisplay = this.coachFilter.transform(this._coaches, this.searchText, this._tempitem);
   }
 
   onTextChange(): void {
     this._coachesDisplay = [];
-    this.filterCoaches();
-  }
-
-  private filterCoaches(): void {
-    if (this._tempitem.length === 0 && this.searchText.length <= 2) {
-      this._coachesDisplay = this._coaches;
-    } else if (this._tempitem.length === 0 && this.searchText.length > 2) {
-      this._coaches.forEach(coach => {
-        if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
-          this._coachesDisplay.push(coach);
-        }
-      });
-    } else if (this._tempitem.length >= 1) {
-      this._coaches.forEach(coach => {
-        const filteredTopic = coach.coachingTopics.filter(x => this._tempitem.some(y => x.topic.toLowerCase() === y));
-        if (filteredTopic.length > 0) {
-          if (this.searchText.length >= this.minLengtTosearch) {
-            if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
-              this._coachesDisplay.push(coach);
-            }
-          } else {
-            this._coachesDisplay.push(coach);
-          }
-        }
-      });
-    }
+    this._coachesDisplay = this.coachFilter.transform(this._coaches, this.searchText, this._tempitem);
   }
 
   private getPerson(): void {
-    const routeParams = this.route.snapshot.paramMap;
-    const personIdFromRoute = String(routeParams.get('id'));
-    this.service
-      .findById(personIdFromRoute)
+    this.personService
+      .findById(this.authenticationService.getUserId()!)
       .subscribe(person => { this._person = person;
-                             this.assertIfCoach();
         },
         error => { console.log(error);
       });
   }
 
-  assertIfCoach(): void {
-    if (this.person.roles.includes('COACH')){
-      this.isCoach = true;
-    }
-  }
 }

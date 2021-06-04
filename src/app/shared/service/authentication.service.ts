@@ -108,9 +108,6 @@ export class AuthenticationService {
   }
 
   isCoach(): boolean {
-    if (this.isLoggedIn()) {
-      return false;
-    }
     return this.hasFeatureAccess(RoleFeature.findCoaches) && !this.hasFeatureAccess(RoleFeature.becomeCoach);
   }
 
