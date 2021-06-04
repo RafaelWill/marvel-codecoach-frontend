@@ -1,11 +1,9 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Person} from '../../shared/model/person';
 import {PersonService} from '../../shared/service/person.service';
 import {AuthenticationService} from '../../shared/service/authentication.service';
 import {CoachingTopic} from '../../shared/model/coaching-topic';
 import {InitService} from '../../shared/materialize/init.service';
-import {ActivatedRoute} from '@angular/router';
-import {newArray} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-coaches-overview',
@@ -15,7 +13,6 @@ import {newArray} from '@angular/compiler/src/util';
 export class CoachesOverviewComponent implements OnInit {
 
   private _coaches: Array<Person> = [];
-
   private _coachesDisplay: Array<Person> = [];
   private _topics: Array<string> = [];
   isLoading = true;
@@ -25,13 +22,11 @@ export class CoachesOverviewComponent implements OnInit {
   private _tempitem: Array<string> = [];
   private _person!: Person;
 
-  private static searchContainsText(coach: Person, text: string): boolean {
-    return coach.firstName.toLowerCase().includes(text) || coach.lastName.toLowerCase().includes(text) || coach.email.toLowerCase().includes(text) || coach.firstName.concat(' ', coach.lastName).toLowerCase().includes(text);
-  }
 
   constructor(private personService: PersonService,
               private authenticationService: AuthenticationService,
-              private initService: InitService) {
+              private initService: InitService,
+              private coachFilter: CoachfilterPipe) {
   }
 
   ngOnInit(): void {
@@ -74,38 +69,12 @@ export class CoachesOverviewComponent implements OnInit {
   onItemSelect(item: string[]): void {
     this._coachesDisplay = [];
     this._tempitem = item;
-
-    this.filterCoaches();
+    this._coachesDisplay = this.coachFilter.transform(this._coaches, this.searchText, this._tempitem);
   }
 
   onTextChange(): void {
     this._coachesDisplay = [];
-    this.filterCoaches();
-  }
-
-  private filterCoaches(): void {
-    if (this._tempitem.length === 0 && this.searchText.length <= 2) {
-      this._coachesDisplay = this._coaches;
-    } else if (this._tempitem.length === 0 && this.searchText.length > 2) {
-      this._coaches.forEach(coach => {
-        if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
-          this._coachesDisplay.push(coach);
-        }
-      });
-    } else if (this._tempitem.length >= 1) {
-      this._coaches.forEach(coach => {
-        const filteredTopic = coach.coachingTopics.filter(x => this._tempitem.some(y => x.topic.toLowerCase() === y));
-        if (filteredTopic.length > 0) {
-          if (this.searchText.length >= this.minLengtTosearch) {
-            if (CoachesOverviewComponent.searchContainsText(coach, this.searchText.toLowerCase())) {
-              this._coachesDisplay.push(coach);
-            }
-          } else {
-            this._coachesDisplay.push(coach);
-          }
-        }
-      });
-    }
+    this._coachesDisplay = this.coachFilter.transform(this._coaches, this.searchText, this._tempitem);
   }
 
   private getPerson(): void {
