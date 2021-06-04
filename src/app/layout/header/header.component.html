@@ -7,7 +7,7 @@
         <li><a class="teal-text" routerLink="/users/{{userId}}/find-coaches" *ngIf="authenticationService.isLoggedIn()"><i class="material-icons right">search</i>Find a coach</a></li>
 
         <li *ngIf="authenticationService.isLoggedIn()">
-          <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-1'>
+          <a class='dropdown-trigger btn yellow darken-2 black-text min-width' data-target='dropdown-profile-1'>
             {{fullName}}<i class="material-icons right">face</i></a>
           <ul id="dropdown-profile-1" class='dropdown-content'>
             <li><a class="waves-light" routerLink="/users/{{userId}}">My Coachee Profile<i class="material-icons right">person</i></a>
@@ -38,7 +38,11 @@
           <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-2'
              href="#">{{fullName}}<i class="material-icons right">face</i></a>
           <ul id="dropdown-profile-2" class='dropdown-content'>
-            <li><a class="waves-light" routerLink="/users/{{userId}}">My profile <i class="material-icons right">person</i></a>
+            <li><a class="waves-light" routerLink="/users/{{userId}}">My Coachee Profile <i class="material-icons right">person</i></a>
+            </li>
+            <li *ngIf="authenticationService.isCoach()"><a class="waves-light" routerLink="/users/{{userId}}/my-coach-profile">My Coach Profile<i class="material-icons right">person</i></a>
+            </li>
+            <li *ngIf="!authenticationService.isCoach()"><a class="waves-light" routerLink="/users/{{userId}}/become-coach">Become a Coach<i class="material-icons right">send</i></a>
             </li>
             <li><a class="waves-light red lighten-2 white-text" routerLink="/home" (click)="logout()">Log out<i
               class="material-icons right">power_settings_new</i></a></li>
