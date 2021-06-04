@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {LocaleStorageKey} from '../model/locale-storage-key.enum';
 
 @Injectable({
   providedIn: 'root'

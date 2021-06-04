@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {JwtHelperService} from '@auth0/angular-jwt';
 import {tap} from 'rxjs/operators';
 import {LocalStorageService} from './local-storage.service';
 import {PersonService} from './person.service';
@@ -10,6 +9,8 @@ import {Person} from '../model/person';
 import {flatMap} from 'rxjs/internal/operators';
 import {Router} from '@angular/router';
 import {RoleFeature} from '../model/role-feature.enum';
+import {JwtService} from './jwt.service';
+import {LocaleStorageKey} from '../model/locale-storage-key.enum';
 
 
 @Injectable({
@@ -18,10 +19,6 @@ import {RoleFeature} from '../model/role-feature.enum';
 export class AuthenticationService {
 
   private readonly _url: string;
-  private readonly _tokenKey = 'jwtToken';
-  private readonly _fullnameKey = 'fullname';
-  private readonly _userId = 'userId';
-  private _jwtHelper = new JwtHelperService();
   private currentPerson!: Person;
   private tokenExpirationTimer: any;
 
@@ -31,12 +28,9 @@ export class AuthenticationService {
   constructor(private _http: HttpClient,
               private localStorage: LocalStorageService,
               private personService: PersonService,
+              private jwtService: JwtService,
               private router: Router) {
     this._url = `${environment.backendUrl}/authenticate`;
-  }
-
-  setJwtToken(token: string): void {
-    this.localStorage.set(this._tokenKey, token);
   }
 
   login(loginData: FormData): Observable<any> {
@@ -44,38 +38,38 @@ export class AuthenticationService {
       .pipe(
         flatMap(_ => this.personService.findById(this.getUserId()!)),
         tap(person => this.currentPerson = person),
-        tap(person => this.localStorage.set(this._userId, `${person.id}`)),
-        tap(person => this.localStorage.set(this._fullnameKey, `${person.firstName} ${person.lastName}`)),
+        tap(person => this.localStorage.set(LocaleStorageKey.userId, `${person.id}`)),
+        tap(person => this.localStorage.set(LocaleStorageKey.fullname, `${person.firstName} ${person.lastName}`)),
         tap(_ => this._isUserLoggedIn.next(true))
       );
   }
 
   getCurrentToken(): string | null {
-    return this.localStorage.get(this._tokenKey);
+    return this.localStorage.get(LocaleStorageKey.token);
   }
 
   isLoggedIn(): boolean {
-    return this.localStorage.get(this._tokenKey) !== null;
+    return this.localStorage.get(LocaleStorageKey.token) !== null;
   }
 
   getUserId(): string | null {
-    if (this.getCurrentToken() === null) {
+    if (this.jwtService.getCurrentToken() === null) {
       return null;
     }
-    return this.decodedToken().userId;
+    return this.jwtService.decodedToken().userId;
   }
 
   getFullName(): string {
     if (!this.getUserId()) {
       return 'Username unknown';
     }
-    return this.localStorage.get(this._fullnameKey)!;
+    return this.localStorage.get(LocaleStorageKey.fullname)!;
   }
 
   logout(): void {
-    this.localStorage.remove(this._tokenKey);
-    this.localStorage.remove(this._fullnameKey);
-    this.localStorage.remove(this._userId);
+    this.localStorage.remove(LocaleStorageKey.token);
+    this.localStorage.remove(LocaleStorageKey.fullname);
+    this.localStorage.remove(LocaleStorageKey.userId);
 
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -93,10 +87,10 @@ export class AuthenticationService {
   }
 
   getExpirationDate(): number {
-    if (this.decodedToken() === null) {
+    if (this.jwtService.decodedToken() === null) {
       return 0;
     }
-    const expirationDate = +this.decodedToken().exp;
+    const expirationDate = +this.jwtService.decodedToken().exp;
     return new Date(expirationDate * 1000).getTime() - new Date().getTime();
   }
 
@@ -104,24 +98,11 @@ export class AuthenticationService {
     if (!this.isLoggedIn()) {
       return false;
     }
-    return this.getFeatures().includes(feature);
+    return this.jwtService.getFeatures().includes(feature);
   }
 
   isCoach(): boolean {
     return this.hasFeatureAccess(RoleFeature.findCoaches) && !this.hasFeatureAccess(RoleFeature.becomeCoach);
-  }
-
-  private getFeatures(): Array<string> {
-    const features = [];
-    for (const i of this.decodedToken().rol) {
-      // @ts-ignore
-      features.push(i.authority);
-    }
-    return features;
-  }
-
-  private decodedToken(): { [key: string]: string } {
-    return this._jwtHelper.decodeToken(this.getCurrentToken()!);
   }
 }
 

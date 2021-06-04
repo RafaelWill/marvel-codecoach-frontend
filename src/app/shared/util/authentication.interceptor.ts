@@ -8,20 +8,21 @@ import {
 import {Observable} from 'rxjs';
 import {AuthenticationService} from '../service/authentication.service';
 import {tap} from 'rxjs/operators';
+import {JwtService} from '../service/jwt.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationInterceptor implements HttpInterceptor {
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private jwtService: JwtService) {
   }
 
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
     let authRequest = request;
-    const token = this.authenticationService.getCurrentToken();
+    const token = this.jwtService.getCurrentToken();
     if (token != null) {
       authRequest = request.clone({
         setHeaders: {
@@ -35,7 +36,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       tap((response: HttpResponse<any>) => {
       const authorization = response.headers?.get('Authorization');
       if (authorization) {
-        this.authenticationService.setJwtToken(authorization.replace('Bearer', '').trim());
+        this.jwtService.setJwtToken(authorization.replace('Bearer', '').trim());
       }
     }));
   }
