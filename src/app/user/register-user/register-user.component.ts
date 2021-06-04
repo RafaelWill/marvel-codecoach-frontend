@@ -32,6 +32,7 @@ export class RegisterUserComponent implements OnInit {
   private _date: Date | undefined;
   loginData: FormGroup | undefined;
   userId!: string | null;
+  sending!: boolean;
 
   constructor(private _personService: PersonService,
               private _formBuilder: FormBuilder,
@@ -52,6 +53,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   submit(): void {
+    this.sending = true;
     if (this._registrationForm.valid) {
       this.addPerson()
         .subscribe((personRegistered) => {
@@ -62,6 +64,7 @@ export class RegisterUserComponent implements OnInit {
             this._registrationForm.reset();
             this.authenticationService.login(this.loginData.value).subscribe( () => {
               this.userId = this.authenticationService.getUserId();
+              this.sending = false;
               this._router.navigate([`users/${this._localStorage.get('userId')}`]);
             });
           }

@@ -21,6 +21,7 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   private _coach!: Person;
   private _coachIdFromRoute!: string;
   private userId!: string | null;
+  sending!: boolean;
 
   private readonly _requestSessionForm = this._formBuilder.group({
       topic: ['', [Validators.required]],
@@ -62,6 +63,7 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
   }
 
   submit(): void {
+    this.sending = true;
     if (this._requestSessionForm.valid) {
       this._requestSessionForm.addControl('coacheeId', new FormControl(this.userId));
       this.requestSession().subscribe(
@@ -71,6 +73,7 @@ export class RequestSessionComponent implements OnInit, AfterViewInit {
         });
     } else {
       this.hasSubmitFailed = true;
+      this.sending = false;
     }
   }
 

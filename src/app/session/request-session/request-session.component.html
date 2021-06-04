@@ -58,7 +58,28 @@
               </div>
             </div>
             <div class="row right-align">
-              <button class="waves-effect waves-light yellow darken-2 btn-large black-text" type="submit">
+              <div *ngIf="sending"
+                   class="waves-effect waves-light yellow darken-2 btn-large black-text margin-button disabled">
+                <div class="row">
+                  <div class="col">Processing</div>
+                  <div class="col" style="padding-top: 10px;">
+                    <div class="preloader-wrapper small active right-align">
+                      <div class="spinner-layer spinner-green-only">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                          <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button *ngIf="!sending" class="waves-effect waves-light yellow darken-2 btn-large black-text" type="submit">
                 Request session
                 <i class="material-icons right">send</i></button>
             </div>
