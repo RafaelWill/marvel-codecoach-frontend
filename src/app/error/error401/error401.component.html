@@ -12,7 +12,7 @@
         <i class="material-icons right">home</i>
       </a>
     </div>
-    <div class="col mb-5 center">
+    <div class="col mb-5 center" *ngIf="!isLoggedIn">
       <a class="waves-effect waves-light yellow darken-2 btn-large black-text" routerLink="/login">
         Sign In<i        class="material-icons right">person</i>
       </a>
