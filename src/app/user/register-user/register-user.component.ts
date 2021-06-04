@@ -33,6 +33,8 @@ export class RegisterUserComponent implements OnInit {
   loginData: FormGroup | undefined;
   userId!: string | null;
   sending!: boolean;
+  error!: boolean;
+  emailExist!: boolean;
 
   constructor(private _personService: PersonService,
               private _formBuilder: FormBuilder,
@@ -67,6 +69,18 @@ export class RegisterUserComponent implements OnInit {
               this.sending = false;
               this._router.navigate([`users/${this._localStorage.get('userId')}`]);
             });
+          },
+          err => {
+            console.log('registration failed');
+            this.sending = false;
+            if (err.status === 400) {
+              this.emailExist = true;
+              this.error = false;
+            } else {
+              console.log(err);
+              this.error = true;
+              this.emailExist = false;
+            }
           }
         );
     }

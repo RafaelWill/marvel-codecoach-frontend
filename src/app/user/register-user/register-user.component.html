@@ -63,6 +63,8 @@
                 </div>
               </div>
             </div>
+            <p class="red-text" *ngIf="error">Something went wrong</p>
+            <p class="red-text" *ngIf="emailExist">Registration failed: Email already exists</p>
             <div class="row float-right">
               <div *ngIf="sending"
                    class="waves-effect waves-light yellow darken-2 btn-large black-text margin-button disabled">
