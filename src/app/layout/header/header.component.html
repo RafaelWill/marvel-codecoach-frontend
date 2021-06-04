@@ -7,10 +7,10 @@
         <li><a class="teal-text" routerLink="/users/{{userId}}/find-coaches" *ngIf="authenticationService.isLoggedIn()"><i class="material-icons right">search</i>Find a coach</a></li>
 
         <li *ngIf="authenticationService.isLoggedIn()">
-          <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-1'
-             href='#'>{{fullName}}<i class="material-icons right">face</i></a>
+          <a class='dropdown-trigger btn yellow darken-2 black-text' data-target='dropdown-profile-1'>
+            {{fullName}}<i class="material-icons right">face</i></a>
           <ul id="dropdown-profile-1" class='dropdown-content'>
-            <li><a class="waves-light" routerLink="/users/{{userId}}">My Profile <i class="material-icons right">person</i></a>
+            <li><a class="waves-light" routerLink="/users/{{userId}}">My Coachee Profile<i class="material-icons right">person</i></a>
             </li>
             <li *ngIf="authenticationService.isCoach()"><a class="waves-light" routerLink="/users/{{userId}}/my-coach-profile">My Coach Profile<i class="material-icons right">person</i></a>
             </li>

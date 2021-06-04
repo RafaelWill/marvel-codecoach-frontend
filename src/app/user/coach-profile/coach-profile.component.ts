@@ -13,12 +13,14 @@ export class CoachProfileComponent implements OnInit {
   private _coach!: Person;
   private _topics: Array<CoachingTopic> = [];
   private _idToGet = '';
+  isLoading = false;
 
   constructor(private route: ActivatedRoute, private personService: PersonService) {
 
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     const routeParams = this.route.snapshot.paramMap;
     const personIdFromRoute = String(routeParams.get('coachId'));
     this.personService
@@ -26,8 +28,11 @@ export class CoachProfileComponent implements OnInit {
       .subscribe(person => { this._coach = person;
                              this._topics = person.coachingTopics;
                              this._idToGet = personIdFromRoute;
+                             this.isLoading = false;
         },
-        error => { console.log(error); });
+        error => { console.log(error);
+                   this.isLoading = false;
+      });
   }
 
   get coach(): Person{

@@ -26,6 +26,7 @@ export class BecomeCoachComponent implements OnInit, AfterViewInit {
   _becomeCoachForm!: FormGroup;
   hasSubmitFailed!: boolean;
   userId!: string | null;
+  sending!: boolean;
 
   constructor(private _formBuilder: FormBuilder,
               private personService: PersonService,
@@ -86,13 +87,15 @@ export class BecomeCoachComponent implements OnInit, AfterViewInit {
   }
 
   submit(): void {
+    this.sending = true;
     if (this._becomeCoachForm.valid) {
       this.becomeACoach().subscribe(
         () =>  {
           this._becomeCoachForm.reset();
-          this.router.navigate([`users/${this.userId}`]); });
+          this.router.navigate([`users/${this.userId}/my-coach-profile`]); });
     } else {
       this.hasSubmitFailed = true;
+      this.sending = false;
     }
   }
 
